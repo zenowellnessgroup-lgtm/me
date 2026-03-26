@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zeno Wellness · Modern Applicant Onboarding</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #f0f4fa;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+      line-height: 1.5;
+      color: #1e293b;
+    }
+    .card {
+      max-width: 1280px;
+      width: 100%;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      box-shadow: 0 30px 60px -20px rgba(0,20,40,0.25), 0 0 0 1px rgba(255,255,255,0.5) inset;
+      padding: 2rem 2.2rem;
+    }
+
+    .portal-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .logo-mark {
+      height: 56px;
+      width: auto;
+      filter: drop-shadow(0 4px 6px rgba(238,124,43,0.2));
+    }
+    .portal-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #1e293b 0%, #ee7c2b 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .progress-side {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .step-pills {
+      display: flex;
+      gap: .45rem;
+      background: #ffffffcc;
+      padding: .45rem;
+      border-radius: 999px;
+      border: 1px solid #e9eef3;
+      flex: 1;
+      min-width: 320px;
+    }
+    .step-pills .pill {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      font-size: .8rem;
+      padding: .55rem .2rem;
+      border-radius: 999px;
+      color: #475569;
+      white-space: nowrap;
+      transition: .2s;
+      background: transparent;
+    }
+    .step-pills .pill.ok {
+      background: #ee7c2b;
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(238,124,43,.28);
+    }
+
+    .global-progress {
+      background: #fff;
+      border-radius: 999px;
+      padding: .55rem .95rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      border: 1px solid #e2e8f0;
+    }
+    .progress-fill {
+      width: 140px;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: #ee7c2b;
+      border-radius: 999px;
+      transition: width .2s;
+    }
+
+    .step { display: none; animation: fadeIn .2s ease; }
+    .step.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-section {
+      background: #fff;
+      border-radius: 1.4rem;
+      padding: 1.35rem 1.35rem;
+      margin-bottom: 1rem;
+      border: 1px solid #eef2f8;
+      box-shadow: 0 10px 24px -14px rgba(0,0,0,.12);
+    }
+
+    .section-pill {
+      background: #fff7f1;
+      color: #d96a1c;
+      font-weight: 800;
+      font-size: .8rem;
+      padding: .45rem .9rem;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: .9rem;
+      border: 1px solid #ffd7b7;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-bottom: .9rem; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .9rem; margin-bottom: .9rem; }
+
+    label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      color: #475569;
+      margin-bottom: .28rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: .85rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: .94rem;
+      background: #fff;
+      transition: .15s;
+      color: #0f172a;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #ee7c2b;
+      box-shadow: 0 0 0 4px rgba(238,124,43,.15);
+    }
+
+    input[type="date"] {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 2.4rem;
+      cursor: pointer;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23ee7c2b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='4' width='18' height='18' rx='2'/><line x1='16' y1='2' x2='16' y2='6'/><line x1='8' y1='2' x2='8' y2='6'/><line x1='3' y1='10' x2='21' y2='10'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right .8rem center;
+      background-size: 1.05rem;
+    }
+
+    .field-error {
+      border: 2px solid #dc2626 !important;
+      background: #fff1f2 !important;
+      box-shadow: 0 0 0 3px rgba(220,38,38,.08) !important;
+    }
+    .field-error-label { color: #b91c1c !important; }
+    .signature-error {
+      border-color: #dc2626 !important;
+      background: #fff1f2 !important;
+      box-shadow: 0 0 0 4px rgba(220,38,38,.08) !important;
+    }
+
+    .error-banner {
+      display: none;
+      background: #fee9e7;
+      border-left: 6px solid #dc2626;
+      color: #7f1d1d;
+      padding: .85rem 1rem;
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .subsection {
+      background: #fafdff;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin: .9rem 0;
+      border: 1px solid #eef2f8;
+      position: relative;
+    }
+    .subsection.hidden { display: none; }
+
+    .remove-btn {
+      position: absolute;
+      top: .8rem;
+      right: .8rem;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: .25rem .75rem;
+      font-size: .72rem;
+      font-weight: 700;
+      color: #dc2626;
+      cursor: pointer;
+    }
+    .remove-btn:hover { background: #fee2e2; border-color: #fecaca; }
+
+    .add-btn {
+      background: #fff;
+      border: 1.5px dashed #ee7c2b;
+      border-radius: 999px;
+      padding: .6rem 1rem;
+      font-weight: 700;
+      color: #ee7c2b;
+      cursor: pointer;
+    }
+    .add-btn:hover { background: #fff7ed; }
+    .add-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .btn-primary, .btn-ghost, .btn-outline {
+      cursor: pointer;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: .15s;
+    }
+    .btn-primary {
+      background: #ee7c2b;
+      border: none;
+      color: #fff;
+      padding: .85rem 1.5rem;
+      box-shadow: 0 8px 16px rgba(238,124,43,.25);
+    }
+    .btn-primary:hover { background: #d96a1c; }
+    .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-ghost {
+      background: #fff;
+      border: 1.5px solid #dbe3ee;
+      color: #334155;
+      padding: .85rem 1.5rem;
+    }
+    .btn-ghost:hover { background: #f8fafc; }
+    .btn-ghost:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-outline {
+      background: #fff;
+      border: 1.5px solid #dde3e9;
+      padding: .5rem 1rem;
+      font-size: .8rem;
+    }
+    .btn-outline:hover { background: #f8fafc; }
+    .btn-outline.danger:hover { background: #fee2e2; border-color: #fecaca; color: #b91c1c; }
+    .btn-outline:disabled { opacity: .45; cursor: not-allowed; }
+
+    .file-upload-modern {
+      border: 2px dashed #d0dae8;
+      border-radius: 16px;
+      padding: .9rem;
+      background: #fbfdff;
+      transition: .2s;
+      margin-bottom: .8rem;
+    }
+    .file-upload-modern:hover { border-color: #ee7c2b; background: #fff8f0; }
+    .upload-area {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+    .upload-preview {
+      width: 62px;
+      height: 62px;
+      border-radius: 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #64748b;
+      font-size: .9rem;
+    }
+    .upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-details { flex: 1; min-width: 180px; }
+    .upload-details .file-name { font-weight: 700; font-size: .9rem; }
+    .upload-details .file-size { font-size: .75rem; color: #64748b; }
+
+    .hidden-input {
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 1px !important;
+      height: 1px !important;
+      pointer-events: none !important;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+      gap: .7rem;
+      margin-bottom: .8rem;
+    }
+    .dlRow {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      min-height: 54px;
+    }
+    .dlCheck { width: 1.1rem; height: 1.1rem; accent-color: #ee7c2b; }
+    .dlMeta {
+      margin-left: auto;
+      font-size: .72rem;
+      color: #64748b;
+      background: #f1f5f9;
+      border-radius: 999px;
+      padding: .15rem .55rem;
+    }
+    .dlControls {
+      display: flex;
+      justify-content: space-between;
+      gap: .8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: .4rem;
+    }
+    .dlLeft { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+
+    .pending-list {
+      background: #fff9e5;
+      border-radius: 14px;
+      padding: .7rem .9rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: .4rem .5rem;
+      margin-top: .5rem;
+      border: 1px solid #ffe7b3;
+    }
+    .pending-badge {
+      background: #ee7c2b;
+      color: #fff;
+      padding: .16rem .6rem;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .pending-item {
+      background: #fff;
+      border-radius: 999px;
+      padding: .18rem .6rem;
+      font-size: .72rem;
+      font-weight: 700;
+      color: #92400e;
+      border: 1px solid #fed7aa;
+    }
+
+    .preview-card { background: #f8fafc; }
+    .preview-section { margin-bottom: 1rem; }
+    .preview-section h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ee7c2b;
+      margin-bottom: .6rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: .2rem;
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: .6rem;
+    }
+    .kv {
+      background: #fff;
+      border-radius: 12px;
+      padding: .7rem .8rem;
+      border: 1px solid #e2e8f0;
+    }
+    .kv .k {
+      font-size: .68rem;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: .12rem;
+      font-weight: 700;
+    }
+    .kv .v {
+      font-size: .9rem;
+      color: #0f172a;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .8rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      border-radius: 999px;
+      padding: .35rem .75rem;
+      font-weight: 700;
+      font-size: .78rem;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+    .pill.ok { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+    .pill.err { background: #fff1f2; color: #9f1239; border-color: #fecdd3; }
+    .pill.warn { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+
+    .muted { color: #64748b; font-size: .9rem; }
+    .tiny { color: #64748b; font-size: .78rem; }
+
+    .sig-wrap {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #fff;
+      padding: .65rem;
+    }
+    .sig-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .5rem;
+      flex-wrap: wrap;
+    }
+    .sig-hint { font-size: .75rem; color: #64748b; }
+    .sig-canvas {
+      width: 100%;
+      height: 180px;
+      display: block;
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 10px;
+      background: #fff;
+      touch-action: none;
+      cursor: crosshair;
+    }
+    .sig-status { margin-top: .5rem; font-size: .78rem; color: #64748b; font-weight: 600; }
+
+    .lock-note {
+      margin-top: .5rem;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: .6rem .8rem;
+      border-radius: 12px;
+      font-weight: 700;
+      display: none;
+    }
+
+    .hp { position: absolute; left: -9999px; top: -9999px; }
+
+    @media (max-width: 860px) {
+      .card { padding: 1rem; border-radius: 1rem; }
+      .row, .row3 { grid-template-columns: 1fr; }
+      .progress-side { flex-direction: column; align-items: stretch; }
+      .step-pills { min-width: auto; overflow-x: auto; }
+      .global-progress { width: 100%; justify-content: space-between; }
+      .progress-fill { flex: 1; width: auto; }
+    }
+  </style>
+<!-- PDF libraries -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+<div class="card">
+  <div class="portal-header">
+    <img class="logo-mark" src="https://static.wixstatic.com/media/83a931_d380340c673b4404bc98fe77b2bc8ccc~mv2_d_2084_2084_s_2.png/v1/crop/x_131,y_150,w_1877,h_1915/fill/w_200,h_204,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/83a931_d380340c673b4404bc98fe77b2bc8ccc~mv2_d_2084_2084_s_2.png" alt="Zeno Wellness" />
+    <h1>Applicant Onboarding</h1>
+  </div>
+
+  <div class="progress-side">
+    <div class="step-pills">
+      <div id="p1" class="pill">❶ Job App</div>
+      <div id="p2" class="pill">❷ Documents</div>
+      <div id="p3" class="pill">❸ Reference</div>
+      <div id="p4" class="pill">❹ Emergency</div>
+      <div id="p5" class="pill">❺ Preview</div>
+    </div>
+    <div class="global-progress">
+      <span style="font-weight:700;">Completion</span>
+      <div class="progress-fill"><span id="progressFill"></span></div>
+      <span id="progressPercent" style="font-weight:700;">0%</span>
+    </div>
+  </div>
+
+  <div id="errorBanner" class="error-banner"></div>
+  <div id="lockNotice" class="lock-note">Application submitted. Form is now locked (read-only).</div>
+
+  <!-- honeypot -->
+  <div class="hp">
+    <label>Leave empty</label>
+    <input id="companyWebsite" autocomplete="off" />
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step1">
+    <div class="form-section">
+      <div class="section-pill">Personal Information</div>
+      <div class="row3">
+        <div><label for="firstName">Full Name (First) *</label><input id="firstName" required></div>
+        <div><label for="middleName">Middle</label><input id="middleName"></div>
+        <div><label for="lastName">Last *</label><input id="lastName" required></div>
+      </div>
+      <div class="row">
+        <div><label for="formDate">Date *</label><input id="formDate" type="date" required></div>
+        <div></div>
+      </div>
+      <div class="row">
+        <div><label for="street">Address (Street Address) *</label><input id="street" required></div>
+        <div><label for="apt">Apt/Suite</label><input id="apt"></div>
+      </div>
+      <div class="row3">
+        <div><label for="city">City *</label><input id="city" required></div>
+        <div><label for="state">State *</label><input id="state" required></div>
+        <div><label for="zip">Zip Code *</label><input id="zip" required></div>
+      </div>
+      <div class="row">
+        <div><label for="email">E-mail *</label><input id="email" type="email" required></div>
+        <div><label for="phone">Phone *</label><input id="phone" type="tel" required placeholder="(123) 456-7890"></div>
+      </div>
+      <div class="row">
+        <div><label for="ssn">Social Security Number (SSN) *</label><input id="ssn" required ></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Employment Details</div>
+      <div class="row3">
+        <div><label for="dateAvailable">Date Available *</label><input id="dateAvailable" type="date" required></div>
+        <div><label for="pay">Desired Pay ($) *</label><input id="pay" type="number" min="0" required></div>
+        <div>
+          <label for="payType">Pay Type *</label>
+          <select id="payType" required>
+            <option value="">Select pay type</option>
+            <option value="Hourly">Hourly</option>
+            <option value="Hourly Based on Productivity">Hourly Based on Productivity</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="position">Position Applied For *</label>
+       <select id="position" required>
+  <option value="">Select position</option>
+  <option value="LPC">LPC</option>
+  <option value="LCSW">LCSW</option>
+  <option value="MFT">MFT</option>
+  <option value="CSAC">CSAC</option>
+  <option value="QMHP">QMHP</option>
+  <option value="CCHW">CCHW</option>
+  <option value="CPRS">CPRS</option>
+  <option value="Intern & Resident">Intern & Resident</option>
+</select>
+        </div>
+        <div>
+          <label for="employmentDesired">Employment Desired *</label>
+          <select id="employmentDesired" required>
+            <option value="">Select employment type</option>
+            <option value="Full-Time">Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="PRN / As Needed">PRN / As Needed</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Employment Eligibility</div>
+      <div class="row">
+        <div>
+          <label for="eligibleUS">Are you legally eligible to work in the U.S.? *</label>
+          <select id="eligibleUS" required>
+            <option value="">Select</option><option>YES</option><option>NO</option>
+          </select>
+        </div>
+        <div>
+          <label for="workedBefore">Have you ever worked for this employer? *</label>
+          <select id="workedBefore" required>
+            <option value="">Select</option><option>YES</option><option>NO</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" id="workedDates" style="display:none;">
+        <div><label for="workedFrom">If yes, start date *</label><input id="workedFrom" type="date"></div>
+        <div><label for="workedTo">End date *</label><input id="workedTo" type="date"></div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="felony">Have you ever been convicted of a felony? *</label>
+          <select id="felony" required>
+            <option value="">Select</option><option>YES</option><option>NO</option>
+          </select>
+        </div>
+        <div></div>
+      </div>
+      <div id="felonyExplainWrap" style="display:none;">
+        <label for="felonyExplain">If yes, please explain *</label>
+        <textarea id="felonyExplain"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Education</div>
+
+      <div class="row">
+        <div><label for="eduHighSchool">High School</label><input id="eduHighSchool"></div>
+        <div><label for="eduHighSchoolCityState">City / State</label><input id="eduHighSchoolCityState"></div>
+      </div>
+      <div class="row3">
+        <div><label for="eduHighFrom">From</label><input id="eduHighFrom" type="date"></div>
+        <div><label for="eduHighTo">To</label><input id="eduHighTo" type="date"></div>
+        <div>
+          <label for="eduHighGraduate">Graduate?</label>
+          <select id="eduHighGraduate">
+            <option value="">Select</option>
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+            <option value="NA">Not Applicable</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="eduHighDiploma">High School Credential *</label>
+          <select id="eduHighDiploma" required>
+            <option value="">Select credential</option>
+            <option value="Diploma">Diploma</option>
+            <option value="GED">GED</option>
+            <option value="NA">Not Applicable</option>
+          </select>
+        </div>
+        <div></div>
+      </div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+
+      <div class="row">
+        <div><label for="eduCollege">College</label><input id="eduCollege"></div>
+        <div><label for="eduCollegeCityState">City / State</label><input id="eduCollegeCityState"></div>
+      </div>
+      <div class="row3">
+        <div><label for="eduCollegeFrom">From</label><input id="eduCollegeFrom" type="date"></div>
+        <div><label for="eduCollegeTo">To</label><input id="eduCollegeTo" type="date"></div>
+        <div>
+          <label for="eduCollegeGraduate">Graduate?</label>
+          <select id="eduCollegeGraduate">
+            <option value="">Select</option>
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+            <option value="NA">Not Applicable</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="eduCollegeDegree">Degree *</label>
+          <select id="eduCollegeDegree" required>
+            <option value="">Select degree</option>
+            <option value="Associates">Associates</option>
+            <option value="Bachelors">Bachelors</option>
+            <option value="Masters">Masters</option>
+            <option value="Doctorate">Doctorate</option>
+            <option value="NA">Not Applicable</option>
+          </select>
+        </div>
+        <div></div>
+      </div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+
+      <div class="row">
+        <div>
+          <label for="hasOtherCerts">Other Certifications?</label>
+          <select id="hasOtherCerts">
+            <option value="">Select</option>
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+            <option value="NA">Not Applicable</option>
+          </select>
+        </div>
+        <div id="otherCertWrap">
+          <label for="otherCertifications">Other Certifications (open text)</label>
+          <input id="otherCertifications" placeholder="Example: CPR, BLS, etc.">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Previous Employment</div>
+
+      <div class="subsection" id="emp1Section">
+        <h3 style="margin-bottom:.4rem;">Employer 1</h3>
+        <div class="tiny" style="margin-bottom:.6rem;">Fill Employer 1, then you can add Employer 2.</div>
+        <div class="row">
+          <div><label for="emp1Name">Employer (Company / Individual) *</label><input id="emp1Name"></div>
+          <div><label for="emp1Phone">Phone *</label><input id="emp1Phone" type="tel" placeholder="(123) 456-7890"></div>
+        </div>
+        <div class="row">
+          <div><label for="emp1Email">E-mail *</label><input id="emp1Email" type="email"></div>
+          <div></div>
+        </div>
+        <div class="row">
+          <div><label for="emp1Street">Address (Street) *</label><input id="emp1Street"></div>
+          <div><label for="emp1Apt">Apt/Suite *</label><input id="emp1Apt"></div>
+        </div>
+        <div class="row3">
+          <div><label for="emp1City">City *</label><input id="emp1City"></div>
+          <div><label for="emp1State">State *</label><input id="emp1State"></div>
+          <div><label for="emp1Zip">Zip Code *</label><input id="emp1Zip"></div>
+        </div>
+        <div class="row3">
+          <div><label for="emp1StartPay">Starting Pay ($) *</label><input id="emp1StartPay" type="number" min="0"></div>
+          <div>
+            <label for="emp1StartPayType">Pay Type *</label>
+            <select id="emp1StartPayType">
+              <option value="">Select pay type</option>
+              <option value="Hourly">Hourly</option>
+              <option value="Salary">Salary</option>
+            </select>
+          </div>
+          <div><label for="emp1EndPay">Ending Pay ($) *</label><input id="emp1EndPay" type="number" min="0"></div>
+        </div>
+        <div class="row">
+          
+          <div></div>
+        </div>
+        <div class="row">
+          <div><label for="emp1JobTitle">Job Title *</label><input id="emp1JobTitle"></div>
+          <div><label for="emp1Responsibilities">Responsibilities *</label><input id="emp1Responsibilities"></div>
+        </div>
+        <div class="row">
+          <div><label for="emp1From">From *</label><input id="emp1From" type="date"></div>
+          <div><label for="emp1To">To *</label><input id="emp1To" type="date"></div>
+        </div>
+        <div><label for="emp1Reason">Reason for Leaving *</label><input id="emp1Reason"></div>
+        <div style="margin-top:.7rem;">
+          <button class="add-btn" type="button" id="btnAddEmp2" disabled>+ Add Employer 2</button>
+        </div>
+      </div>
+
+      <div class="subsection hidden" id="emp2Section">
+        <button class="remove-btn" type="button" id="btnRemoveEmp2">✕ remove</button>
+        <h3 style="margin-bottom:.4rem;">Employer 2</h3>
+        <div class="tiny" style="margin-bottom:.6rem;">When enabled, all Employer 2 fields become required.</div>
+        <div class="row">
+          <div><label for="emp2Name">Employer (Company / Individual) *</label><input id="emp2Name" disabled></div>
+          <div><label for="emp2Phone">Phone *</label><input id="emp2Phone" type="tel" disabled></div>
+        </div>
+        <div class="row"><div><label for="emp2Email">E-mail *</label><input id="emp2Email" type="email" disabled></div><div></div></div>
+        <div class="row"><div><label for="emp2Street">Address (Street) *</label><input id="emp2Street" disabled></div><div><label for="emp2Apt">Apt/Suite *</label><input id="emp2Apt" disabled></div></div>
+        <div class="row3"><div><label for="emp2City">City *</label><input id="emp2City" disabled></div><div><label for="emp2State">State *</label><input id="emp2State" disabled></div><div><label for="emp2Zip">Zip Code *</label><input id="emp2Zip" disabled></div></div>
+        <div class="row3">
+          <div><label for="emp2StartPay">Starting Pay ($) *</label><input id="emp2StartPay" type="number" min="0" disabled></div>
+          <div>
+            <label for="emp2StartPayType">Pay Type *</label>
+            <select id="emp2StartPayType" disabled>
+              <option value="">Select pay type</option>
+              <option value="Hourly">Hourly</option>
+              <option value="Salary">Salary</option>
+            </select>
+          </div>
+          <div><label for="emp2EndPay">Ending Pay ($) *</label><input id="emp2EndPay" type="number" min="0" disabled></div>
+        </div>
+        <div class="row">
+          <div></div>
+        </div>
+        <div class="row"><div><label for="emp2JobTitle">Job Title *</label><input id="emp2JobTitle" disabled></div><div><label for="emp2Responsibilities">Responsibilities *</label><input id="emp2Responsibilities" disabled></div></div>
+        <div class="row"><div><label for="emp2From">From *</label><input id="emp2From" type="date" disabled></div><div><label for="emp2To">To *</label><input id="emp2To" type="date" disabled></div></div>
+        <div><label for="emp2Reason">Reason for Leaving *</label><input id="emp2Reason" disabled></div>
+        <div style="margin-top:.7rem;">
+          <button class="add-btn" type="button" id="btnAddEmp3" disabled>+ Add Employer 3</button>
+        </div>
+      </div>
+
+      <div class="subsection hidden" id="emp3Section">
+        <button class="remove-btn" type="button" id="btnRemoveEmp3">✕ remove</button>
+        <h3 style="margin-bottom:.4rem;">Employer 3</h3>
+        <div class="tiny" style="margin-bottom:.6rem;">When enabled, all Employer 3 fields become required.</div>
+        <div class="row"><div><label for="emp3Name">Employer (Company / Individual) *</label><input id="emp3Name" disabled></div><div><label for="emp3Phone">Phone *</label><input id="emp3Phone" type="tel" disabled></div></div>
+        <div class="row"><div><label for="emp3Email">E-mail *</label><input id="emp3Email" type="email" disabled></div><div></div></div>
+        <div class="row"><div><label for="emp3Street">Address (Street) *</label><input id="emp3Street" disabled></div><div><label for="emp3Apt">Apt/Suite *</label><input id="emp3Apt" disabled></div></div>
+        <div class="row3"><div><label for="emp3City">City *</label><input id="emp3City" disabled></div><div><label for="emp3State">State *</label><input id="emp3State" disabled></div><div><label for="emp3Zip">Zip Code *</label><input id="emp3Zip" disabled></div></div>
+        <div class="row3">
+          <div><label for="emp3StartPay">Starting Pay ($) *</label><input id="emp3StartPay" type="number" min="0" disabled></div>
+          <div>
+            <label for="emp3StartPayType">Pay Type *</label>
+            <select id="emp3StartPayType" disabled>
+              <option value="">Select pay type</option>
+              <option value="Hourly">Hourly</option>
+              <option value="Salary">Salary</option>
+            </select>
+          </div>
+          <div><label for="emp3EndPay">Ending Pay ($) *</label><input id="emp3EndPay" type="number" min="0" disabled></div>
+        </div>
+      <div></div>
+        <div class="row"><div><label for="emp3JobTitle">Job Title *</label><input id="emp3JobTitle" disabled></div><div><label for="emp3Responsibilities">Responsibilities *</label><input id="emp3Responsibilities" disabled></div></div>
+        <div class="row"><div><label for="emp3From">From *</label><input id="emp3From" type="date" disabled></div><div><label for="emp3To">To *</label><input id="emp3To" type="date" disabled></div></div>
+        <div><label for="emp3Reason">Reason for Leaving *</label><input id="emp3Reason" disabled></div>
+      </div>
+    </div>
+
+    <div class="form-section" id="references-section">
+      <div class="section-pill">References (Professional Only)</div>
+
+      <div id="ref1Container" class="subsection">
+        <button class="remove-btn" type="button" id="btnRemoveRef1" style="display:none;">✕ remove</button>
+        <h3 style="margin-bottom:.5rem;">Reference 1</h3>
+        <div class="row3">
+          <div><label for="ref1FullName">Full Name</label><input id="ref1FullName"></div>
+          <div><label for="ref1Relationship">Relationship</label><input id="ref1Relationship"></div>
+          <div><label for="ref1Company">Company</label><input id="ref1Company"></div>
+        </div>
+        <div class="row3">
+          <div><label for="ref1Title">Title</label><input id="ref1Title"></div>
+          <div><label for="ref1Email">E-mail</label><input id="ref1Email" type="email"></div>
+          <div><label for="ref1Phone">Phone</label><input id="ref1Phone" type="tel"></div>
+        </div>
+      </div>
+
+      <div id="ref2Container" class="subsection hidden">
+        <button class="remove-btn" type="button" id="btnRemoveRef2">✕ remove</button>
+        <h3 style="margin-bottom:.5rem;">Reference 2</h3>
+        <div class="row3">
+          <div><label for="ref2FullName">Full Name</label><input id="ref2FullName"></div>
+          <div><label for="ref2Relationship">Relationship</label><input id="ref2Relationship"></div>
+          <div><label for="ref2Company">Company</label><input id="ref2Company"></div>
+        </div>
+        <div class="row3">
+          <div><label for="ref2Title">Title</label><input id="ref2Title"></div>
+          <div><label for="ref2Email">E-mail</label><input id="ref2Email" type="email"></div>
+          <div><label for="ref2Phone">Phone</label><input id="ref2Phone" type="tel"></div>
+        </div>
+      </div>
+
+      <div id="ref3Container" class="subsection hidden">
+        <button class="remove-btn" type="button" id="btnRemoveRef3">✕ remove</button>
+        <h3 style="margin-bottom:.5rem;">Reference 3</h3>
+        <div class="row3">
+          <div><label for="ref3FullName">Full Name</label><input id="ref3FullName"></div>
+          <div><label for="ref3Relationship">Relationship</label><input id="ref3Relationship"></div>
+          <div><label for="ref3Company">Company</label><input id="ref3Company"></div>
+        </div>
+        <div class="row3">
+          <div><label for="ref3Title">Title</label><input id="ref3Title"></div>
+          <div><label for="ref3Email">E-mail</label><input id="ref3Email" type="email"></div>
+          <div><label for="ref3Phone">Phone</label><input id="ref3Phone" type="tel"></div>
+        </div>
+      </div>
+
+      <button class="add-btn" type="button" id="btnAddRef">+ Add Reference</button>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Military Service</div>
+      <div class="row">
+        <div>
+          <label for="veteran">Are you a veteran? *</label>
+          <select id="veteran" required>
+            <option value="">Select</option><option value="YES">YES</option><option value="NO">NO</option>
+          </select>
+        </div>
+        <div></div>
+      </div>
+
+      <div id="militaryFields" style="display:none;">
+        <div class="row">
+          <div>
+            <label for="branch">Military Branch *</label>
+            <select id="branch">
+              <option value="">Select branch</option>
+              <option value="Navy">Navy</option>
+              <option value="Army">Army</option>
+              <option value="Marines">Marines</option>
+              <option value="Air Force">Air Force</option>
+              <option value="Space Force">Space Force</option>
+              <option value="Coast Guard">Coast Guard</option>
+              <option value="NA">Not Applicable</option>
+            </select>
+          </div>
+          <div></div>
+        </div>
+        <div class="row" id="militaryRankRow"><div><label for="rank">Rank at Discharge</label><input id="rank"></div><div></div></div>
+        <div class="row" id="militaryDatesRow"><div><label for="serviceFrom">From</label><input id="serviceFrom" type="date"></div><div><label for="serviceTo">To</label><input id="serviceTo" type="date"></div></div>
+        <div class="row" id="militaryDischargeRow"><div><label for="dischargeType">Type of Discharge</label><input id="dischargeType"></div><div></div></div>
+        <div id="militaryExplainWrap"><label for="dischargeExplain">If not honorable, please explain</label><textarea id="dischargeExplain"></textarea></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Background Check Consent</div>
+      <div class="row">
+        <div>
+          <label for="bgConsent">If asked, are you willing to consent to a background check?</label>
+          <select id="bgConsent">
+            <option value="">Select</option><option>YES</option><option>NO</option><option value="NA">Not Applicable</option>
+          </select>
+        </div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-pill">Disclaimer</div>
+      <div class="tiny" style="line-height:1.55;">
+        Applicant understands that this is an Equal Opportunity Employer and committed to excellence through diversity.
+        Please complete each section even if you attach a resume.
+        <br><br>
+        I, the Applicant, certify that my answers are true and honest to the best of my knowledge. If this application leads
+        to my employment, I understand false or misleading information may result in termination.
+      </div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+
+      <!-- Hidden required field used for save + validation -->
+      <input id="signature" type="hidden" required>
+
+      <div class="row">
+        <div>
+          <label>Digital Signature (Pen Input) *</label>
+          <div class="sig-wrap" id="signaturePadWrap">
+            <div class="sig-toolbar">
+              <span class="sig-hint">Sign with mouse / touch</span>
+              <button class="btn-outline danger" type="button" id="signatureClear">Clear</button>
+            </div>
+            <canvas id="signatureCanvas" class="sig-canvas"></canvas>
+            <div class="sig-status" id="signatureStatus">No signature yet</div>
+          </div>
+        </div>
+        <div>
+          <label for="sigDate">Date *</label>
+          <input id="sigDate" type="date" required>
+          <div style="height:.8rem;"></div>
+          <label for="printName">Print Name *</label>
+          <input id="printName" required>
+        </div>
+      </div>
+
+      <div id="jobSaveStatus" class="pill" style="margin-top:.4rem;">Not saved yet</div>
+    </div>
+
+    <div class="pending-list" id="pendingStep1">
+      <span class="pending-badge">pending</span>
+      <span id="step1PendingItems"></span>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2">
+    <div class="form-section">
+      <h2 style="margin-bottom:.35rem;">Documents (Select, Download, Print, Upload)</h2>
+      <p class="muted">Select the blank forms you want to download. Then print, fill, and upload.</p>
+
+      <div style="margin-top:.7rem;">
+        <div class="section-pill">Select forms to download</div>
+        <div class="download-grid">
+          <div class="dlRow"><input class="dlCheck" type="checkbox" data-url="https://saddlebrown-sandpiper-372204.hostingersite.com/I-9.pdf" data-filename="I-9.pdf" id="chkI9"><label for="chkI9">I-9</label><span class="dlMeta">PDF</span></div>
+          <div class="dlRow"><input class="dlCheck" type="checkbox" data-url="https://saddlebrown-sandpiper-372204.hostingersite.com/W-9.pdf" data-filename="W-9.pdf" id="chkW9"><label for="chkW9">W-9</label><span class="dlMeta">PDF</span></div>
+          <div class="dlRow"><input class="dlCheck" type="checkbox" data-url="https://saddlebrown-sandpiper-372204.hostingersite.com/Disclosure_Attachment.pdf" data-filename="Disclosure_Attachment.pdf" id="chkD3"><label for="chkD3">Disclosure (Attachment #3)</label><span class="dlMeta">PDF</span></div>
+          <div class="dlRow"><input class="dlCheck" type="checkbox" data-url="https://saddlebrown-sandpiper-372204.hostingersite.com/AuthorityRelease_Attachment.pdf" data-filename="AuthorityRelease_Attachment.pdf" id="chkA4"><label for="chkA4">Authority Release (Attachment 4)</label><span class="dlMeta">PDF</span></div>
+          <div class="dlRow"><input class="dlCheck" type="checkbox" data-url="https://saddlebrown-sandpiper-372204.hostingersite.com/CriminalRecords_Attachment.pdf" data-filename="CriminalRecords_Attachment.pdf" id="chkA5"><label for="chkA5">Criminal Records (Attachment 5)</label><span class="dlMeta">PDF</span></div>
+          <div class="dlRow"><input class="dlCheck" type="checkbox" data-url="https://saddlebrown-sandpiper-372204.hostingersite.com/ApplicantsRights_Attachment.pdf" data-filename="ApplicantsRights_Attachment.pdf" id="chkA6"><label for="chkA6">Applicant’s Rights (Attachment 6)</label><span class="dlMeta">PDF</span></div>
+        </div>
+
+        <div class="dlControls">
+          <div class="dlLeft">
+            <button class="btn-outline" type="button" id="btnSelectAll">Select all</button>
+            <button class="btn-outline" type="button" id="btnClearAll">Clear</button>
+            <span class="pill" id="dlCount">0 selected</span>
+          </div>
+          <button class="btn-primary" type="button" id="btnDownloadSelected" disabled>Download selected</button>
+        </div>
+        <div id="downloadStatus" class="pill" style="margin-top:.5rem;">Select forms, then click “Download selected”.</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2 style="margin-bottom:.35rem;">Upload Required Documents (max 7 MB each)</h2>
+      <div class="tiny" style="margin-bottom:.6rem;">Accepted: PDF/JPG/PNG. ID must include Front and Back.</div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="idFrontPreview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="idFrontName">No file chosen</div>
+            <div class="file-size" id="idFrontSize">-</div>
+            <div class="tiny" style="color:#ee7c2b;">ID Front (required)</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('idFront').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="idFrontRemove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="idFront" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="idBackPreview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="idBackName">No file chosen</div>
+            <div class="file-size" id="idBackSize">-</div>
+            <div class="tiny" style="color:#ee7c2b;">ID Back (required)</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('idBack').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="idBackRemove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="idBack" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="i9Preview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="i9Name">No file chosen</div>
+            <div class="file-size" id="i9Size">-</div>
+            <div class="tiny" style="color:#ee7c2b;">I-9 (printed) *</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('i9').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="i9Remove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="i9" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="w9Preview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="w9Name">No file chosen</div>
+            <div class="file-size" id="w9Size">-</div>
+            <div class="tiny" style="color:#ee7c2b;">W-9 (printed) *</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('w9').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="w9Remove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="w9" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="disclosurePreview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="disclosureName">No file chosen</div>
+            <div class="file-size" id="disclosureSize">-</div>
+            <div class="tiny" style="color:#ee7c2b;">Disclosure / Att.3 *</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('disclosure').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="disclosureRemove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="disclosure" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="att4Preview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="att4Name">No file chosen</div>
+            <div class="file-size" id="att4Size">-</div>
+            <div class="tiny" style="color:#ee7c2b;">Authority Release (Att.4) *</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('att4').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="att4Remove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="att4" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="att5Preview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="att5Name">No file chosen</div>
+            <div class="file-size" id="att5Size">-</div>
+            <div class="tiny" style="color:#ee7c2b;">Criminal Records (Att.5) *</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('att5').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="att5Remove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="att5" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div class="file-upload-modern">
+        <div class="upload-area">
+          <div class="upload-preview" id="att6Preview">📎</div>
+          <div class="upload-details">
+            <div class="file-name" id="att6Name">No file chosen</div>
+            <div class="file-size" id="att6Size">-</div>
+            <div class="tiny" style="color:#ee7c2b;">Applicant’s Rights (Att.6) *</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn-outline" type="button" onclick="document.getElementById('att6').click()">Choose</button>
+            <button class="btn-outline danger" type="button" id="att6Remove" style="display:none;">Remove</button>
+          </div>
+        </div>
+        <input id="att6" type="file" accept=".pdf,.jpg,.jpeg,.png" required class="hidden-input">
+      </div>
+
+      <div id="uploadStatus" class="pill" style="margin-top:.4rem;">Uploads will be sent on final Submit.</div>
+    </div>
+
+    <div class="pending-list" id="pendingStep2">
+      <span class="pending-badge">pending</span>
+      <span id="step2PendingItems"></span>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step3">
+    <div class="form-section">
+      <h2 style="margin-bottom:.4rem;">Reference Release Form (Online)</h2>
+
+      <input id="rrSignatureFull" type="hidden" required>
+
+      <div class="row">
+        <div>
+          <label>Digital Signature (Pen Input) *</label>
+          <div class="sig-wrap" id="rrSignaturePadWrap">
+            <div class="sig-toolbar">
+              <span class="sig-hint">Sign with mouse / touch</span>
+              <button class="btn-outline danger" type="button" id="rrSignatureClear">Clear</button>
+            </div>
+            <canvas id="rrSignatureCanvas" class="sig-canvas"></canvas>
+            <div class="sig-status" id="rrSignatureStatus">No signature yet</div>
+          </div>
+        </div>
+        <div>
+          <label for="rrPrintedName">Printed Name *</label><input id="rrPrintedName" required>
+          <div style="height:.8rem;"></div>
+          <label for="rrDate">Date *</label><input id="rrDate" type="date" required>
+        </div>
+      </div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+      <div class="row"><div><label for="rrRef1Name">Personal Reference 1 Name *</label><input id="rrRef1Name" required></div><div><label for="rrRef1Title">Reference 1 Title</label><input id="rrRef1Title"></div></div>
+      <div class="row"><div><label for="rrRef1Email">Reference 1 Email</label><input id="rrRef1Email" type="email"></div><div><label for="rrRef1Phone">Reference 1 Phone</label><input id="rrRef1Phone" type="tel"></div></div>
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+      <div class="row"><div><label for="rrRef2Name">Personal Reference 2 Name *</label><input id="rrRef2Name" required></div><div><label for="rrRef2Title">Reference 2 Title</label><input id="rrRef2Title"></div></div>
+      <div class="row"><div><label for="rrRef2Email">Reference 2 Email</label><input id="rrRef2Email" type="email"></div><div><label for="rrRef2Phone">Reference 2 Phone</label><input id="rrRef2Phone" type="tel"></div></div>
+
+      <div id="rrStatus" class="pill" style="margin-top:.5rem;">Not saved yet</div>
+    </div>
+
+    <div class="pending-list" id="pendingStep3">
+      <span class="pending-badge">pending</span>
+      <span id="step3PendingItems"></span>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step4">
+    <div class="form-section">
+      <h2 style="margin-bottom:.5rem;">Independent Contractor Emergency Contact Form (Online)</h2>
+
+      <div class="row"><div><label for="ecName">Name *</label><input id="ecName" required></div><div><label for="ecDept">Department</label><input id="ecDept"></div></div>
+
+      <h3 style="margin:.6rem 0 .4rem;">Personal Contact Info</h3>
+      <div class="row"><div><label for="ecHomeAddress">Home Address *</label><input id="ecHomeAddress" required></div><div><label for="ecCityStateZip">City, State, Zip *</label><input id="ecCityStateZip" required></div></div>
+      <div class="row"><div><label for="ecHomePhone">Home Telephone #</label><input id="ecHomePhone" type="tel"></div><div><label for="ecCellPhone">Cell # *</label><input id="ecCellPhone" type="tel" required></div></div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+      <h3 style="margin:.2rem 0 .4rem;">Emergency Contact 1</h3>
+      <div class="row"><div><label for="ec1Name">Name *</label><input id="ec1Name" required></div><div><label for="ec1Rel">Relationship *</label><input id="ec1Rel" required></div></div>
+      <div class="row"><div><label for="ec1Address">Address</label><input id="ec1Address"></div><div><label for="ec1CityStateZip">City, State, Zip</label><input id="ec1CityStateZip"></div></div>
+      <div class="row"><div><label for="ec1HomePhone">Home Phone</label><input id="ec1HomePhone" type="tel"></div><div><label for="ec1CellPhone">Cell Phone</label><input id="ec1CellPhone" type="tel"></div></div>
+      <div class="row"><div><label for="ec1WorkPhone">Work Phone</label><input id="ec1WorkPhone" type="tel"></div><div><label for="ec1Employer">Employer</label><input id="ec1Employer"></div></div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+      <h3 style="margin:.2rem 0 .4rem;">Emergency Contact 2</h3>
+      <div class="row"><div><label for="ec2Name">Name</label><input id="ec2Name"></div><div><label for="ec2Rel">Relationship</label><input id="ec2Rel"></div></div>
+      <div class="row"><div><label for="ec2Address">Address</label><input id="ec2Address"></div><div><label for="ec2CityStateZip">City, State, Zip</label><input id="ec2CityStateZip"></div></div>
+      <div class="row"><div><label for="ec2HomePhone">Home Phone</label><input id="ec2HomePhone" type="tel"></div><div><label for="ec2CellPhone">Cell Phone</label><input id="ec2CellPhone" type="tel"></div></div>
+      <div class="row"><div><label for="ec2WorkPhone">Work Phone</label><input id="ec2WorkPhone" type="tel"></div><div><label for="ec2Employer">Employer</label><input id="ec2Employer"></div></div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+      <h3 style="margin:.2rem 0 .4rem;">Medical Contact Info</h3>
+      <div class="row"><div><label for="docName">Doctor Name</label><input id="docName"></div><div><label for="docPhone">Doctor Phone #</label><input id="docPhone" type="tel"></div></div>
+      <div class="row"><div><label for="dentistName">Dentist Name</label><input id="dentistName"></div><div><label for="dentistPhone">Dentist Phone #</label><input id="dentistPhone" type="tel"></div></div>
+
+      <hr style="margin:.9rem 0; border:none; border-top:1px solid #e2e8f0;">
+      <div class="row">
+        <div>
+          <label for="ecConsent">I authorize contact in an emergency. *</label>
+          <select id="ecConsent" required>
+            <option value="">Select</option>
+            <option>YES</option>
+            <option>NO</option>
+          </select>
+        </div>
+        <div></div>
+      </div>
+
+      <input id="ecSignature" type="hidden" required>
+
+      <div class="row">
+        <div>
+          <label>Digital Signature (Pen Input) *</label>
+          <div class="sig-wrap" id="ecSignaturePadWrap">
+            <div class="sig-toolbar">
+              <span class="sig-hint">Sign with mouse / touch</span>
+              <button class="btn-outline danger" type="button" id="ecSignatureClear">Clear</button>
+            </div>
+            <canvas id="ecSignatureCanvas" class="sig-canvas"></canvas>
+            <div class="sig-status" id="ecSignatureStatus">No signature yet</div>
+          </div>
+        </div>
+        <div>
+          <label for="ecSigDate">Date *</label><input id="ecSigDate" type="date" required>
+        </div>
+      </div>
+
+      <div id="ecStatus" class="pill" style="margin-top:.5rem;">Not saved yet</div>
+    </div>
+
+    <div class="pending-list" id="pendingStep4">
+      <span class="pending-badge">pending</span>
+      <span id="step4PendingItems"></span>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step5">
+    <div class="form-section preview-card">
+      <h2 style="margin-bottom:.35rem;">Preview & Submit</h2>
+      <p class="muted" style="margin-bottom:.5rem;">Review what you entered. Click Submit to finalize.</p>
+      <div class="section-pill" style="margin-bottom:.6rem;">Application summary</div>
+      <div id="previewContent"></div>
+      <div class="pill" id="finalStatus" style="margin-top:.7rem;">Ready</div>
+    </div>
+
+    <div class="pending-list" id="pendingStep5">
+      <span class="pending-badge">still missing</span>
+      <span id="step5PendingItems"></span>
+    </div>
+  </div>
+
+  <div class="nav-actions" id="mainNav">
+    <button class="btn-ghost" id="btnBack">← Back</button>
+    <button class="btn-primary" id="btnNext">Next →</button>
+  </div>
+
+  <div class="nav-actions" id="previewNav" style="display:none;">
+    <button class="btn-ghost" id="btnBackPreview">← Edit</button>
+    <button class="btn-primary" id="btnSubmitFinal">Submit Application</button>
+  </div>
+</div>
+<!-- Hidden PDF render area -->
+<div id="pdfRenderHost" style="position:fixed; left:-99999px; top:0; width:900px; background:#fff; z-index:-1;">
+  <div id="pdfRenderContent" style="
+    width:900px;
+    background:#ffffff;
+    color:#111827;
+    font-family:Arial, sans-serif;
+    padding:28px;
+    line-height:1.4;
+  "></div>
+</div>
+
+<script>
+(() => {
+  // ================= CONFIG =================
+  const FLOW_URL_JOB    = "https://defaultb350d7f6cdba4c43b8873216707106.fa.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/1e185c1e8b014719b10fc834466295ec/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wyAT4PlLC9PZOteE_mtyMHYW9J6opgTP2sIAgwFPWZ8";
+  const FLOW_URL_UPLOAD = "https://defaultb350d7f6cdba4c43b8873216707106.fa.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/83563e3b8fff4f9aa0ab0e234230898d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zKB3iJxOEcFaw5m9llFHoJ5EIRnc4dahKmZpu7g3W-c";
+  const FLOW_URL_EXTRA  = "https://defaultb350d7f6cdba4c43b8873216707106.fa.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2a332ad8660a4659a38aecc0a81d2273/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=va7GIbZsUlodWhQHXdxf6ifFV_i_yjIrkQWnUduZT_c";
+  const FLOW_URL_PDF    = "https://defaultb350d7f6cdba4c43b8873216707106.fa.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90a5934b910d434a929610a5ba63be9b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=jPHEi_nDSOQt12XrbUKl1aTeFYFAjeOv_qa2KmXvxQc";
+
+  const API_KEY = "ZENO-PORTAL-2026";
+  const MAX_FILE_SIZE_MB = 7;
+
+  const steps = ["step1", "step2", "step3", "step4", "step5"];
+  let stepIndex = 0;
+  let appId = null;
+  let submitted = false;
+
+  const pageLoadedAt = Date.now();
+  let firstInteractionAt = null;
+
+  const signaturePads = {};
+  const datePairs = [
+    ["workedFrom", "workedTo"],
+    ["eduHighFrom", "eduHighTo"],
+    ["eduCollegeFrom", "eduCollegeTo"],
+    ["emp1From", "emp1To"],
+    ["emp2From", "emp2To"],
+    ["emp3From", "emp3To"],
+    ["serviceFrom", "serviceTo"]
+  ];
+
+  // ================= HELPERS =================
+  function $(id) {
+    const el = document.getElementById(id);
+    if (!el) throw new Error("Missing element id: " + id);
+    return el;
+  }
+
+  function getEl(id) {
+    return document.getElementById(id);
+  }
+
+  function trimStr(v) {
+    return (v ?? "").toString().trim();
+  }
+
+  function must(v) {
+    return trimStr(v).length > 0;
+  }
+
+  function digitsOnly(v) {
+    return (v || "").replace(/\D/g, "");
+  }
+
+  function isValidPhone10(v) {
+    return digitsOnly(v).length === 10;
+  }
+
+  function todayStr() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function makeAppId() {
+    return "APP-" + Date.now().toString().slice(-6);
+  }
+
+  function esc(s) {
+    return (s ?? "").toString()
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function pdfText(v) {
+    const s = (v ?? "").toString().replace(/\s+/g, " ").trim();
+    return s || "—";
+  }
+
+  function showError(msg) {
+    const b = $("errorBanner");
+    if (!msg) {
+      b.style.display = "none";
+      b.textContent = "";
+      return;
+    }
+    b.style.display = "block";
+    b.textContent = msg;
+  }
+
+  function clearErrors(scope = document) {
+    showError("");
+    scope.querySelectorAll(".field-error").forEach(el => el.classList.remove("field-error"));
+    scope.querySelectorAll(".field-error-label").forEach(el => el.classList.remove("field-error-label"));
+    scope.querySelectorAll(".signature-error").forEach(el => el.classList.remove("signature-error"));
+  }
+
+  function getFieldLabel(el) {
+    if (!el) return "Field";
+    const labelFor = document.querySelector(`label[for="${el.id}"]`);
+    if (labelFor) return labelFor.innerText.replace("*", "").trim();
+    const local = el.closest("div")?.querySelector("label");
+    if (local) return local.innerText.replace("*", "").trim();
+    return el.id || "Field";
+  }
+
+  function markFieldError(el) {
+    if (!el) return;
+    el.classList.add("field-error");
+    const label = document.querySelector(`label[for="${el.id}"]`);
+    if (label) label.classList.add("field-error-label");
+  }
+
+  function clearFieldError(el) {
+    if (!el) return;
+    el.classList.remove("field-error");
+    const label = document.querySelector(`label[for="${el.id}"]`);
+    if (label) label.classList.remove("field-error-label");
+  }
+
+  function markSignatureCanvasError(canvasId) {
+    const canvas = getEl(canvasId);
+    const wrap = canvas?.closest(".sig-wrap");
+    if (wrap) wrap.classList.add("signature-error");
+  }
+
+  function clearSignatureCanvasError(canvasId) {
+    const canvas = getEl(canvasId);
+    const wrap = canvas?.closest(".sig-wrap");
+    if (wrap) wrap.classList.remove("signature-error");
+  }
+
+  function registerInteraction() {
+    if (!firstInteractionAt) firstInteractionAt = Date.now();
+  }
+
+  function honeypotLooksReal(v) {
+    const s = (v ?? "").toString().trim();
+    if (!s) return false;
+    if (s.length <= 1) return false;
+    if (/(https?:\/\/|www\.|@)/i.test(s)) return true;
+    const alnumCount = (s.match(/[a-z0-9]/gi) || []).length;
+    return alnumCount >= 3;
+  }
+
+  function timingLooksBot() {
+    const now = Date.now();
+    if (now - pageLoadedAt < 2000) return true;
+    if (!firstInteractionAt) return true;
+    if (now - firstInteractionAt < 800) return true;
+    return false;
+  }
+
+  function humanCheckOrExplain() {
+    const hp = getEl("companyWebsite");
+    if (hp && honeypotLooksReal(hp.value)) {
+      return { ok: false, msg: "Submission blocked (anti-bot). Please refresh and try again." };
+    }
+    if (timingLooksBot()) {
+      return { ok: false, msg: "Please wait a moment before submitting (anti-bot protection)." };
+    }
+    return { ok: true };
+  }
+
+  function sanitizeFileName(name) {
+    return (name || "Application")
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function getPdfFileName() {
+    const first = getEl("firstName")?.value?.trim() || "";
+    const last = getEl("lastName")?.value?.trim() || "";
+    const id = appId || ("APP-" + Date.now().toString().slice(-6));
+    const fullName = sanitizeFileName(`${first} ${last}`.trim()) || "Applicant";
+    return `${id} - ${fullName} - Application.pdf`;
+  }
+
+  function kv(k, v) {
+    const vv = (v === null || v === undefined || v === "")
+      ? "<span style='color:#94a3b8'>—</span>"
+      : esc(v);
+    return `<div class="kv"><div class="k">${esc(k)}</div><div class="v">${vv}</div></div>`;
+  }
+
+  // ================= STEP UI =================
+  function setPills() {
+    ["p1","p2","p3","p4","p5"].forEach((id, i) => {
+      const el = $(id);
+      el.className = "pill" + (i === stepIndex ? " ok" : "");
+    });
+  }
+
+  function showStep() {
+    steps.forEach((s, i) => $(s).classList.toggle("active", i === stepIndex));
+
+    $("btnBack").style.display = stepIndex === 0 ? "none" : "inline-block";
+    $("btnNext").textContent = stepIndex === steps.length - 1 ? "Submit" : "Next →";
+
+    const isPreview = stepIndex === 4;
+    $("mainNav").style.display = isPreview ? "none" : "flex";
+    $("previewNav").style.display = isPreview ? "flex" : "none";
+
+    setPills();
+
+    if (isPreview) buildFullPreview();
+
+    Object.values(signaturePads).forEach(p => p.resizeCanvas());
+    updatePendingFields();
+    updateProgressBar();
+  }
+
+  // ================= INPUT RULES =================
+  function enforceDigitsLimit(el, maxLen) {
+    if (!el) return;
+    const apply = () => {
+      el.value = digitsOnly(el.value).slice(0, maxLen);
+    };
+    el.addEventListener("input", apply);
+    el.addEventListener("change", apply);
+    apply();
+  }
+
+  function applyNumericFieldRules() {
+    const ssn = getEl("ssn");
+    const zip = getEl("zip");
+    const emp1Zip = getEl("emp1Zip");
+    const emp2Zip = getEl("emp2Zip");
+    const emp3Zip = getEl("emp3Zip");
+
+    [ssn, zip, emp1Zip, emp2Zip, emp3Zip].forEach(el => {
+      if (!el) return;
+      el.setAttribute("inputmode", "numeric");
+      el.setAttribute("autocomplete", "off");
+    });
+
+    if (ssn) enforceDigitsLimit(ssn, 10);
+    [zip, emp1Zip, emp2Zip, emp3Zip].forEach(el => enforceDigitsLimit(el, 5));
+  }
+
+  function wireDatePairConstraint(fromId, toId) {
+    const fromEl = getEl(fromId);
+    const toEl = getEl(toId);
+    if (!fromEl || !toEl) return;
+
+    function syncMin() {
+      const fromVal = trimStr(fromEl.value);
+      toEl.min = fromVal || "";
+      if (fromVal && trimStr(toEl.value) && toEl.value < fromVal) {
+        toEl.value = "";
+      }
+    }
+
+    fromEl.addEventListener("change", syncMin);
+    fromEl.addEventListener("input", syncMin);
+    syncMin();
+  }
+
+  function validateDatePairsInStep(stepEl) {
+    const invalid = [];
+
+    datePairs.forEach(([fromId, toId]) => {
+      const fromEl = getEl(fromId);
+      const toEl = getEl(toId);
+      if (!fromEl || !toEl) return;
+      if (!stepEl.contains(fromEl) && !stepEl.contains(toEl)) return;
+      if (fromEl.disabled || toEl.disabled) return;
+      if (fromEl.offsetParent === null || toEl.offsetParent === null) return;
+
+      const fromVal = trimStr(fromEl.value);
+      const toVal = trimStr(toEl.value);
+      if (!fromVal || !toVal) return;
+
+      if (toVal < fromVal) {
+        markFieldError(fromEl);
+        markFieldError(toEl);
+        invalid.push({
+          fromEl,
+          toEl,
+          msg: `${getFieldLabel(toEl)} cannot be earlier than ${getFieldLabel(fromEl)}`
+        });
+      }
+    });
+
+    return invalid;
+  }
+
+  // ================= CONDITIONAL LOGIC =================
+  function toggleWorkedBeforeFields() {
+    const yes = $("workedBefore").value === "YES";
+    $("workedDates").style.display = yes ? "grid" : "none";
+    $("workedFrom").required = yes;
+    $("workedTo").required = yes;
+    $("workedFrom").disabled = !yes;
+    $("workedTo").disabled = !yes;
+
+    if (!yes) {
+      $("workedFrom").value = "";
+      $("workedTo").value = "";
+      clearFieldError($("workedFrom"));
+      clearFieldError($("workedTo"));
+    }
+  }
+
+  function toggleFelonyExplain() {
+    const yes = $("felony").value === "YES";
+    $("felonyExplainWrap").style.display = yes ? "block" : "none";
+    $("felonyExplain").required = yes;
+    $("felonyExplain").disabled = !yes;
+    if (!yes) {
+      $("felonyExplain").value = "";
+      clearFieldError($("felonyExplain"));
+    }
+  }
+
+  function toggleMilitaryFields() {
+    const veteran = $("veteran").value;
+    const box = $("militaryFields");
+    const branch = $("branch");
+    const rank = $("rank");
+    const serviceFrom = $("serviceFrom");
+    const serviceTo = $("serviceTo");
+    const dischargeType = $("dischargeType");
+    const dischargeExplain = $("dischargeExplain");
+
+    if (veteran !== "YES") {
+      box.style.display = "none";
+      [branch, rank, serviceFrom, serviceTo, dischargeType, dischargeExplain].forEach(el => {
+        el.required = false;
+        el.disabled = true;
+        el.value = "";
+        clearFieldError(el);
+      });
+      return;
+    }
+
+    box.style.display = "block";
+    [branch, rank, serviceFrom, serviceTo, dischargeType, dischargeExplain].forEach(el => {
+      el.disabled = false;
+    });
+    branch.required = true;
+
+    const branchNA = branch.value === "NA";
+    const rankRow = getEl("militaryRankRow");
+    const datesRow = getEl("militaryDatesRow");
+    const dischargeRow = getEl("militaryDischargeRow");
+    const explainWrap = getEl("militaryExplainWrap");
+
+    if (rankRow) rankRow.style.display = branchNA ? "none" : "grid";
+    if (datesRow) datesRow.style.display = branchNA ? "none" : "grid";
+    if (dischargeRow) dischargeRow.style.display = branchNA ? "none" : "grid";
+    if (explainWrap) explainWrap.style.display = branchNA ? "none" : "block";
+
+    [rank, serviceFrom, serviceTo, dischargeType, dischargeExplain].forEach(el => {
+      el.required = false;
+      el.disabled = branchNA;
+      if (branchNA) {
+        el.value = "";
+        clearFieldError(el);
+      }
+    });
+  }
+
+  function toggleOtherCertifications() {
+    const val = $("hasOtherCerts").value;
+    const wrap = $("otherCertWrap");
+    const field = $("otherCertifications");
+
+    if (val === "YES") {
+      wrap.style.display = "block";
+      field.disabled = false;
+      field.required = true;
+      return;
+    }
+
+    field.required = false;
+
+    if (val === "NO" || val === "NA") {
+      field.value = "";
+      field.disabled = true;
+      wrap.style.display = "none";
+      clearFieldError(field);
+    } else {
+      field.disabled = false;
+      wrap.style.display = "block";
+    }
+  }
+
+  function toggleCollegeFieldsByHighGraduate() {
+    const hsGrad = $("eduHighGraduate").value;
+
+    const rowCollege1 = $("eduCollege").closest(".row");
+    const rowCollege2 = $("eduCollegeFrom").closest(".row3");
+    const rowCollege3 = $("eduCollegeDegree").closest(".row");
+
+    const collegeFields = [
+      $("eduCollege"),
+      $("eduCollegeCityState"),
+      $("eduCollegeFrom"),
+      $("eduCollegeTo"),
+      $("eduCollegeGraduate"),
+      $("eduCollegeDegree")
+    ];
+
+    const showCollege = hsGrad === "YES";
+
+    [rowCollege1, rowCollege2, rowCollege3].forEach(row => {
+      if (row) row.style.display = showCollege ? "" : "none";
+    });
+
+    collegeFields.forEach(el => {
+      el.disabled = !showCollege;
+      el.required = showCollege;
+      if (!showCollege) {
+        el.value = "";
+        clearFieldError(el);
+      }
+    });
+  }
+
+  function toggleCollegeDegreeRequirement() {
+    const grad = $("eduCollegeGraduate").value;
+    const degree = $("eduCollegeDegree");
+
+    if (grad === "NO" || grad === "NA" || grad === "") {
+      degree.required = false;
+      if (grad === "NO" || grad === "NA") degree.value = "";
+    } else {
+      degree.required = true;
+    }
+  }
+
+  // ================= EMPLOYERS =================
+  const EMP_FIELDS = {
+    1: ["emp1Name","emp1Phone","emp1Email","emp1Street","emp1Apt","emp1City","emp1State","emp1Zip","emp1StartPay","emp1StartPayType","emp1EndPay","emp1JobTitle","emp1Responsibilities","emp1From","emp1To","emp1Reason"],
+    2: ["emp2Name","emp2Phone","emp2Email","emp2Street","emp2Apt","emp2City","emp2State","emp2Zip","emp2StartPay","emp2StartPayType","emp2EndPay","emp2JobTitle","emp2Responsibilities","emp2From","emp2To","emp2Reason"],
+    3: ["emp3Name","emp3Phone","emp3Email","emp3Street","emp3Apt","emp3City","emp3State","emp3Zip","emp3StartPay","emp3StartPayType","emp3EndPay","emp3JobTitle","emp3Responsibilities","emp3From","emp3To","emp3Reason"]
+  };
+
+  function employerFilled(n) {
+    const ids = n === 1
+      ? ["emp1Name","emp1Phone","emp1From","emp1To"]
+      : n === 2
+      ? ["emp2Name","emp2Phone","emp2From","emp2To"]
+      : ["emp3Name","emp3Phone","emp3From","emp3To"];
+    return ids.every(id => must($(id).value));
+  }
+
+  function setEmployerSectionEnabled(n, enabled) {
+    const section = getEl(`emp${n}Section`);
+    if (!section) return;
+
+    section.classList.toggle("hidden", !enabled);
+
+    (EMP_FIELDS[n] || []).forEach(id => {
+      const el = getEl(id);
+      if (!el) return;
+      el.disabled = !enabled;
+      el.required = !!enabled;
+      if (!enabled) {
+        el.value = "";
+        clearFieldError(el);
+      }
+    });
+
+    const endPayType = getEl(`emp${n}EndPayType`);
+    if (endPayType) endPayType.disabled = true;
+
+    refreshEmployerButtons();
+  }
+
+  function refreshEmployerButtons() {
+    $("btnAddEmp2").disabled = !employerFilled(1);
+
+    const emp2Visible = !$("emp2Section").classList.contains("hidden");
+    const emp3Visible = !$("emp3Section").classList.contains("hidden");
+
+    $("btnAddEmp3").disabled = !(emp2Visible && employerFilled(2));
+    $("btnRemoveEmp2").style.display = emp2Visible ? "inline-block" : "none";
+    $("btnRemoveEmp3").style.display = emp3Visible ? "inline-block" : "none";
+  }
+
+  function watchEmployerInputs(n) {
+    (EMP_FIELDS[n] || []).forEach(id => {
+      const el = getEl(id);
+      if (!el) return;
+      el.addEventListener("input", refreshEmployerButtons);
+      el.addEventListener("change", refreshEmployerButtons);
+    });
+  }
+
+  function wireEmployerPayTypeAlignment(prefix) {
+    const startType = getEl(`${prefix}StartPayType`);
+    const endType = getEl(`${prefix}EndPayType`);
+    if (!startType || !endType) return;
+
+    function sync() {
+      endType.value = startType.value || "";
+      endType.disabled = true;
+    }
+
+    startType.addEventListener("change", sync);
+    sync();
+  }
+
+  // ================= REFERENCES =================
+  function updateRefButtons() {
+    const ref2Visible = !$("ref2Container").classList.contains("hidden");
+    const ref3Visible = !$("ref3Container").classList.contains("hidden");
+
+    $("btnRemoveRef2").style.display = ref2Visible ? "inline-block" : "none";
+    $("btnRemoveRef3").style.display = ref3Visible ? "inline-block" : "none";
+    $("btnAddRef").disabled = ref2Visible && ref3Visible;
+  }
+
+  function clearReference(n) {
+    ["FullName","Relationship","Company","Title","Email","Phone"].forEach(part => {
+      const el = getEl(`ref${n}${part}`);
+      if (el) {
+        el.value = "";
+        clearFieldError(el);
+      }
+    });
+  }
+
+  // ================= SIGNATURE PADS =================
+  function setupSignaturePad({ canvasId, hiddenInputId, clearBtnId, statusId }) {
+    const canvas = $(canvasId);
+    const hidden = $(hiddenInputId);
+    const clearBtn = $(clearBtnId);
+    const status = $(statusId);
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+    let drawing = false;
+    let hasInk = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function resizeCanvas() {
+      const dpr = Math.max(window.devicePixelRatio || 1, 1);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(320, Math.floor(rect.width || canvas.parentElement.clientWidth || 650));
+      const h = Math.max(160, Math.floor(rect.height || 180));
+      const old = hasInk ? canvas.toDataURL("image/png") : null;
+
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr, dpr);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#0f172a";
+      ctx.lineWidth = 2;
+
+      if (old) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, 0, 0, w, h);
+        img.src = old;
+      }
+    }
+
+    function getPoint(evt) {
+      const r = canvas.getBoundingClientRect();
+      if (evt.touches && evt.touches.length) {
+        return {
+          x: evt.touches[0].clientX - r.left,
+          y: evt.touches[0].clientY - r.top
+        };
+      }
+      return {
+        x: evt.clientX - r.left,
+        y: evt.clientY - r.top
+      };
+    }
+
+    function syncHidden() {
+      if (!hasInk) {
+        hidden.value = "";
+        status.textContent = "No signature yet";
+      } else {
+        hidden.value = canvas.toDataURL("image/png");
+        status.textContent = "Signature captured";
+      }
+      clearSignatureCanvasError(canvasId);
+      clearFieldError(hidden);
+      updatePendingFields();
+      updateProgressBar();
+    }
+
+    function start(evt) {
+      if (submitted) return;
+      registerInteraction();
+      drawing = true;
+      const p = getPoint(evt);
+      lastX = p.x;
+      lastY = p.y;
+      hasInk = true;
+      if (evt.cancelable) evt.preventDefault();
+    }
+
+    function move(evt) {
+      if (!drawing || submitted) return;
+      registerInteraction();
+      const p = getPoint(evt);
+
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+
+      lastX = p.x;
+      lastY = p.y;
+
+      if (evt.cancelable) evt.preventDefault();
+      syncHidden();
+    }
+
+    function end(evt) {
+      if (!drawing) return;
+      drawing = false;
+      if (evt && evt.cancelable) evt.preventDefault();
+      syncHidden();
+    }
+
+    function clearPad() {
+      if (submitted) return;
+      registerInteraction();
+
+      const r = canvas.getBoundingClientRect();
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, Math.max(320, r.width), Math.max(160, r.height));
+
+      hasInk = false;
+      hidden.value = "";
+      status.textContent = "No signature yet";
+
+      clearSignatureCanvasError(canvasId);
+      updatePendingFields();
+      updateProgressBar();
+    }
+
+    canvas.addEventListener("mousedown", start);
+    canvas.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", end);
+
+    canvas.addEventListener("touchstart", start, { passive: false });
+    canvas.addEventListener("touchmove", move, { passive: false });
+    window.addEventListener("touchend", end, { passive: false });
+
+    clearBtn.addEventListener("click", clearPad);
+
+    resizeCanvas();
+    signaturePads[canvasId] = { resizeCanvas, clearPad, hasInk: () => hasInk };
+  }
+
+  function validatePenSignatureForStep(stepIdx) {
+    const cfg = {
+      0: { hiddenId:"signature", canvasId:"signatureCanvas", name:"Digital Signature (Job Application)" },
+      2: { hiddenId:"rrSignatureFull", canvasId:"rrSignatureCanvas", name:"Digital Signature (Reference Release)" },
+      3: { hiddenId:"ecSignature", canvasId:"ecSignatureCanvas", name:"Digital Signature (Emergency Contact)" }
+    }[stepIdx];
+
+    if (!cfg) return { ok: true };
+
+    const hidden = $(cfg.hiddenId);
+    if (!must(hidden.value)) {
+      markFieldError(hidden);
+      markSignatureCanvasError(cfg.canvasId);
+      getEl(cfg.canvasId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return { ok: false, msg: `Please provide ${cfg.name}.` };
+    }
+
+    clearFieldError(hidden);
+    clearSignatureCanvasError(cfg.canvasId);
+    return { ok: true };
+  }
+
+  // ================= DOWNLOADS =================
+  function getSelectedDownloads() {
+    return Array.from(document.querySelectorAll(".dlCheck"))
+      .filter(cb => cb.checked)
+      .map(cb => ({
+        url: cb.getAttribute("data-url"),
+        filename: cb.getAttribute("data-filename") || "download.pdf"
+      }));
+  }
+
+  function updateDlCountAndButton() {
+    const selected = getSelectedDownloads();
+    $("dlCount").textContent = `${selected.length} selected`;
+    $("btnDownloadSelected").disabled = submitted || selected.length === 0;
+  }
+
+  function wireDownloadSelectionUI() {
+    document.querySelectorAll(".dlCheck").forEach(cb => {
+      cb.addEventListener("change", updateDlCountAndButton);
+    });
+
+    $("btnSelectAll").addEventListener("click", () => {
+      if (submitted) return;
+      document.querySelectorAll(".dlCheck").forEach(cb => cb.checked = true);
+      updateDlCountAndButton();
+    });
+
+    $("btnClearAll").addEventListener("click", () => {
+      if (submitted) return;
+      document.querySelectorAll(".dlCheck").forEach(cb => cb.checked = false);
+      updateDlCountAndButton();
+    });
+
+    $("btnDownloadSelected").addEventListener("click", async () => {
+      if (submitted) return;
+
+      const st = $("downloadStatus");
+      st.className = "pill";
+
+      const selected = getSelectedDownloads();
+      if (!selected.length) {
+        st.className = "pill warn";
+        st.textContent = "Select at least 1 form to download.";
+        return;
+      }
+
+      st.textContent = "Starting downloads...";
+
+      try {
+        $("btnDownloadSelected").disabled = true;
+
+        for (const item of selected) {
+          const a = document.createElement("a");
+          a.href = item.url;
+          a.download = item.filename;
+          a.target = "_blank";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          await new Promise(r => setTimeout(r, 350));
+        }
+
+        st.className = "pill ok";
+        st.textContent = "Downloads started (check your browser downloads).";
+      } catch (e) {
+        console.error(e);
+        st.className = "pill err";
+        st.textContent = "Download error. Check console.";
+      } finally {
+        updateDlCountAndButton();
+      }
+    });
+  }
+
+  // ================= FILE UPLOADS =================
+  function setupFileUpload(inputId, previewId, nameId, sizeId, removeBtnId) {
+    const input = $(inputId);
+    const preview = $(previewId);
+    const nameSpan = $(nameId);
+    const sizeSpan = $(sizeId);
+    const removeBtn = $(removeBtnId);
+
+    function reset() {
+      nameSpan.textContent = "No file chosen";
+      sizeSpan.textContent = "-";
+      removeBtn.style.display = "none";
+      preview.innerHTML = "📎";
+    }
+
+    input.addEventListener("change", e => {
+      if (submitted) return;
+      registerInteraction();
+
+      const file = e.target.files[0];
+      if (!file) {
+        reset();
+        updatePendingFields();
+        updateProgressBar();
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        alert(`File too large (max ${MAX_FILE_SIZE_MB} MB).`);
+        input.value = "";
+        reset();
+        updatePendingFields();
+        updateProgressBar();
+        return;
+      }
+
+      nameSpan.textContent = file.name;
+      sizeSpan.textContent = (file.size / 1024).toFixed(1) + " KB";
+      removeBtn.style.display = "inline-block";
+
+      if (file.type.startsWith("image/")) {
+        const r = new FileReader();
+        r.onload = evt => preview.innerHTML = `<img src="${evt.target.result}" alt="">`;
+        r.readAsDataURL(file);
+      } else {
+        preview.innerHTML = "📄";
+      }
+
+      clearFieldError(input);
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    removeBtn.addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      input.value = "";
+      reset();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    reset();
+  }
+
+  function getRequiredUploadInputs() {
+    return ["idFront","idBack","i9","w9","disclosure","att4","att5","att6"];
+  }
+
+  // ================= VALIDATION =================
+  function validateSSNAndZip(stepEl) {
+    const invalid = [];
+
+    const ssn = getEl("ssn");
+    if (ssn && stepEl.contains(ssn) && trimStr(ssn.value) && digitsOnly(ssn.value).length > 10) {
+      markFieldError(ssn);
+      invalid.push({ el: ssn, msg: "Social Security Number cannot be more than 10 digits" });
+    }
+
+    ["zip","emp1Zip","emp2Zip","emp3Zip"].forEach(id => {
+      const el = getEl(id);
+      if (!el || !stepEl.contains(el)) return;
+      if (!trimStr(el.value)) return;
+      if (digitsOnly(el.value).length !== trimStr(el.value).length) {
+        markFieldError(el);
+        invalid.push({ el, msg: `${getFieldLabel(el)} must contain numbers only` });
+      }
+    });
+
+    return invalid;
+  }
+
+  function getPhoneFields(scope) {
+    return Array.from(scope.querySelectorAll("input")).filter(el => (el.id || "").toLowerCase().includes("phone"));
+  }
+
+  function validatePhoneFieldsInStep(stepEl) {
+    const invalid = [];
+    getPhoneFields(stepEl).forEach(el => {
+      if (el.disabled || el.offsetParent === null) return;
+      const v = trimStr(el.value);
+      if (!v) return;
+      if (!isValidPhone10(v)) {
+        invalid.push(el);
+        markFieldError(el);
+      } else {
+        clearFieldError(el);
+      }
+    });
+    return invalid;
+  }
+
+  function validateStep(stepIdx) {
+    clearErrors(document);
+
+    toggleWorkedBeforeFields();
+    toggleFelonyExplain();
+    toggleMilitaryFields();
+    toggleOtherCertifications();
+    toggleCollegeFieldsByHighGraduate();
+    toggleCollegeDegreeRequirement();
+
+    const stepEl = getEl(steps[stepIdx]);
+    if (!stepEl) return true;
+
+    const requiredEls = Array.from(stepEl.querySelectorAll("input[required], select[required], textarea[required]"))
+      .filter(el => !el.disabled && (el.type === "hidden" || el.offsetParent !== null));
+
+    const invalid = [];
+    const invalidNames = [];
+
+    for (const el of requiredEls) {
+      let ok = true;
+
+      if (el.type === "file") ok = !!(el.files && el.files.length > 0);
+      else if (el.type === "hidden") ok = must(el.value);
+      else ok = must(el.value);
+
+      if (!ok) {
+        invalid.push(el);
+        invalidNames.push(getFieldLabel(el));
+        markFieldError(el);
+      } else {
+        clearFieldError(el);
+      }
+    }
+
+    const sigCheck = validatePenSignatureForStep(stepIdx);
+    if (!sigCheck.ok) {
+      showError(sigCheck.msg);
+      return false;
+    }
+
+    const badPhones = validatePhoneFieldsInStep(stepEl);
+    badPhones.forEach(el => {
+      invalid.push(el);
+      invalidNames.push(`${getFieldLabel(el)} (must be 10 digits)`);
+    });
+
+    const badDates = validateDatePairsInStep(stepEl);
+    badDates.forEach(item => {
+      invalid.push(item.toEl);
+      invalidNames.push(item.msg);
+    });
+
+    const badNumeric = validateSSNAndZip(stepEl);
+    badNumeric.forEach(item => {
+      invalid.push(item.el);
+      invalidNames.push(item.msg);
+    });
+
+    if (invalid.length) {
+      const first = invalid[0];
+      if (first && first.type !== "hidden") {
+        first.scrollIntoView({ behavior: "smooth", block: "center" });
+        try { first.focus({ preventScroll: true }); } catch {}
+      }
+
+      const unique = [...new Set(invalidNames)];
+      showError("Please complete/fix: " + unique.slice(0, 6).join(", ") + (unique.length > 6 ? ` (+${unique.length - 6} more)` : ""));
+      return false;
+    }
+
+    return true;
+  }
+
+  // ================= FLOW HELPERS =================
+  async function postJson(url, payload, timeoutMs = 45000) {
+    if (!url || /PASTE_/i.test(url)) {
+      throw new Error("Flow URL placeholder is still present. Please paste your real Flow URL.");
+    }
+
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      return res;
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  async function safeReadText(res) {
+    try { return await res.text(); } catch { return ""; }
+  }
+
+  function makeFlowErrorMessage(res, txt) {
+    return `Flow call failed (${res.status} ${res.statusText})${txt ? " - " + txt.slice(0, 300) : ""}`;
+  }
+
+  async function callFlowOrThrow(url, payload, timeoutMs = 45000) {
+    const res = await postJson(url, payload, timeoutMs);
+    const txt = await safeReadText(res);
+    if (!res.ok) throw new Error(makeFlowErrorMessage(res, txt));
+    let parsed = null;
+    try { parsed = txt ? JSON.parse(txt) : null; } catch {}
+    return { res, text: txt, json: parsed };
+  }
+
+  async function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result).split(",")[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ================= DATA COLLECTION =================
+  function collectFieldsFromContainer(containerId) {
+    const root = $(containerId);
+    const data = {};
+
+    root.querySelectorAll("input, select, textarea").forEach(el => {
+      if (!el.id) return;
+      if (el.id === "companyWebsite") return;
+      if (el.disabled) return;
+      if (el.type === "file") return;
+
+      if (el.type === "checkbox") {
+        data[el.id] = !!el.checked;
+        return;
+      }
+
+      if (el.type === "radio") {
+        if (el.checked) data[el.id] = el.value;
+        return;
+      }
+
+      if (el.type === "date") {
+        const v = trimStr(el.value);
+        data[el.id] = v ? v : null;
+        return;
+      }
+
+      data[el.id] = (el.value ?? "").toString().trim();
+    });
+
+    return data;
+  }
+
+  function collectUploadedFilesMeta() {
+    const ids = ["idFront","idBack","i9","w9","disclosure","att4","att5","att6"];
+    const out = {};
+
+    ids.forEach(id => {
+      const input = getEl(id);
+      const file = input?.files?.[0] || null;
+      out[id] = file
+        ? {
+            name: file.name,
+            size: file.size,
+            type: file.type || "application/octet-stream"
+          }
+        : null;
+    });
+
+    return out;
+  }
+
+  function collectAllFormData() {
+    return {
+      appId: appId || null,
+      step1: collectFieldsFromContainer("step1"),
+      step2Files: collectUploadedFilesMeta(),
+      step3: collectFieldsFromContainer("step3"),
+      step4: collectFieldsFromContainer("step4"),
+      selectedDownloads: getSelectedDownloads().map(x => x.filename)
+    };
+  }
+
+  // ================= SAVE / UPLOAD =================
+  async function saveJobApplication() {
+    const st = $("jobSaveStatus");
+    st.className = "pill";
+    st.textContent = "Saving job application...";
+
+    const hc = humanCheckOrExplain();
+    if (!hc.ok) {
+      st.className = "pill err";
+      st.textContent = hc.msg;
+      showError(hc.msg);
+      return false;
+    }
+
+    if (!validateStep(0)) {
+      st.className = "pill err";
+      st.textContent = "Please fix required fields.";
+      return false;
+    }
+
+    if (!appId) appId = makeAppId();
+
+    try {
+      const payload = {
+        apiKey: API_KEY,
+        eventType: "jobApplicationSave",
+        appId,
+        savedAt: new Date().toISOString(),
+        submitted: false,
+        step: "step1",
+        data: collectFieldsFromContainer("step1")
+      };
+
+      await callFlowOrThrow(FLOW_URL_JOB, payload);
+      st.className = "pill ok";
+      st.textContent = "Saved. Application ID: " + appId;
+      return true;
+    } catch (e) {
+      console.error(e);
+      st.className = "pill err";
+      st.textContent = e.message || "Save failed.";
+      return false;
+    }
+  }
+
+  async function uploadAllDocs() {
+    const up = $("uploadStatus");
+    up.className = "pill";
+    up.textContent = "Uploading documents...";
+
+    const hc = humanCheckOrExplain();
+    if (!hc.ok) {
+      up.className = "pill err";
+      up.textContent = hc.msg;
+      showError(hc.msg);
+      return false;
+    }
+
+    if (!appId) {
+      up.className = "pill err";
+      up.textContent = "Missing Application ID.";
+      return false;
+    }
+
+    if (!validateStep(1)) {
+      up.className = "pill err";
+      up.textContent = "Please upload all required documents.";
+      return false;
+    }
+
+    try {
+      const fileIds = getRequiredUploadInputs();
+
+      for (let i = 0; i < fileIds.length; i++) {
+        const id = fileIds[i];
+        const input = $(id);
+        const file = input.files && input.files[0];
+
+        if (!file) {
+          up.className = "pill err";
+          up.textContent = `Missing file: ${id}`;
+          return false;
+        }
+
+        up.textContent = `Uploading ${i + 1}/${fileIds.length}: ${file.name}...`;
+        const contentBase64 = await fileToBase64(file);
+
+        const payload = {
+          apiKey: API_KEY,
+          eventType: "documentUpload",
+          appId,
+          uploadedAt: new Date().toISOString(),
+          documentType: id,
+          fileName: file.name,
+          contentType: file.type || "application/octet-stream",
+          fileSize: file.size,
+          contentBase64
+        };
+
+        await callFlowOrThrow(FLOW_URL_UPLOAD, payload, 120000);
+      }
+
+      up.className = "pill ok";
+      up.textContent = "All documents uploaded successfully.";
+      return true;
+    } catch (e) {
+      console.error(e);
+      up.className = "pill err";
+      up.textContent = e.message || "Upload failed.";
+      return false;
+    }
+  }
+
+  async function saveReferenceRelease() {
+    const st = $("rrStatus");
+    st.className = "pill";
+    st.textContent = "Saving reference release...";
+
+    const hc = humanCheckOrExplain();
+    if (!hc.ok) {
+      st.className = "pill err";
+      st.textContent = hc.msg;
+      showError(hc.msg);
+      return false;
+    }
+
+    if (!validateStep(2)) {
+      st.className = "pill err";
+      st.textContent = "Please fix required fields.";
+      return false;
+    }
+
+    if (!appId) appId = makeAppId();
+
+    try {
+      const payload = {
+        apiKey: API_KEY,
+        eventType: "referenceReleaseSave",
+        appId,
+        savedAt: new Date().toISOString(),
+        step: "step3",
+        data: collectFieldsFromContainer("step3")
+      };
+
+      await callFlowOrThrow(FLOW_URL_EXTRA, payload);
+      st.className = "pill ok";
+      st.textContent = "Saved.";
+      return true;
+    } catch (e) {
+      console.error(e);
+      st.className = "pill err";
+      st.textContent = e.message || "Save failed.";
+      return false;
+    }
+  }
+
+  async function saveEmergencyContact() {
+    const st = $("ecStatus");
+    st.className = "pill";
+    st.textContent = "Saving emergency contact...";
+
+    const hc = humanCheckOrExplain();
+    if (!hc.ok) {
+      st.className = "pill err";
+      st.textContent = hc.msg;
+      showError(hc.msg);
+      return false;
+    }
+
+    if (!validateStep(3)) {
+      st.className = "pill err";
+      st.textContent = "Please fix required fields.";
+      return false;
+    }
+
+    if (!appId) appId = makeAppId();
+
+    try {
+      const payload = {
+        apiKey: API_KEY,
+        eventType: "emergencyContactSave",
+        appId,
+        savedAt: new Date().toISOString(),
+        step: "step4",
+        data: collectFieldsFromContainer("step4")
+      };
+
+      await callFlowOrThrow(FLOW_URL_EXTRA, payload);
+      st.className = "pill ok";
+      st.textContent = "Saved.";
+      return true;
+    } catch (e) {
+      console.error(e);
+      st.className = "pill err";
+      st.textContent = e.message || "Save failed.";
+      return false;
+    }
+  }
+
+  // ================= PREVIEW =================
+  function buildEmploymentPreview(n) {
+    const sec = getEl(`emp${n}Section`);
+    const name = getEl(`emp${n}Name`);
+    if (!sec || sec.classList.contains("hidden") || !name || !must(name.value)) return "";
+
+    let html = `<div class="preview-section"><h3>Employer ${n}</h3><div class="preview-grid">`;
+    [
+      [`emp${n}Name`, "Employer"],
+      [`emp${n}Phone`, "Phone"],
+      [`emp${n}Email`, "Email"],
+      [`emp${n}Street`, "Street"],
+      [`emp${n}Apt`, "Apt/Suite"],
+      [`emp${n}City`, "City"],
+      [`emp${n}State`, "State"],
+      [`emp${n}Zip`, "Zip Code"],
+      [`emp${n}StartPay`, "Starting Pay"],
+      [`emp${n}StartPayType`, "Starting Pay Type"],
+      [`emp${n}EndPay`, "Ending Pay"],
+      [`emp${n}EndPayType`, "Ending Pay Type"],
+      [`emp${n}JobTitle`, "Job Title"],
+      [`emp${n}Responsibilities`, "Responsibilities"],
+      [`emp${n}From`, "From"],
+      [`emp${n}To`, "To"],
+      [`emp${n}Reason`, "Reason For Leaving"]
+    ].forEach(([id, label]) => {
+      const el = getEl(id);
+      html += kv(label, el ? el.value : "");
+    });
+    html += `</div></div>`;
+    return html;
+  }
+
+  function buildReferencePreview(n) {
+    const container = getEl(`ref${n}Container`);
+    if (!container || container.classList.contains("hidden")) return "";
+
+    let html = "";
+    const hasAny =
+      must(getEl(`ref${n}FullName`)?.value) ||
+      must(getEl(`ref${n}Relationship`)?.value) ||
+      must(getEl(`ref${n}Company`)?.value) ||
+      must(getEl(`ref${n}Title`)?.value) ||
+      must(getEl(`ref${n}Email`)?.value) ||
+      must(getEl(`ref${n}Phone`)?.value);
+
+    if (!hasAny) return html;
+
+    html += `<div class="preview-section"><h3>Professional Reference ${n}</h3><div class="preview-grid">`;
+    [
+      [`ref${n}FullName`, "Full Name"],
+      [`ref${n}Relationship`, "Relationship"],
+      [`ref${n}Company`, "Company"],
+      [`ref${n}Title`, "Title"],
+      [`ref${n}Email`, "Email"],
+      [`ref${n}Phone`, "Phone"]
+    ].forEach(([id, label]) => {
+      const el = getEl(id);
+      html += kv(label, el ? el.value : "");
+    });
+    html += `</div></div>`;
+
+    return html;
+  }
+
+  function buildFullPreview() {
+    let html = `<div class="pill" style="margin-bottom:.6rem;">Application ID: <b>${esc(appId || "(not generated yet)")}</b></div>`;
+
+    html += `<div class="preview-section"><h3>Personal Information</h3><div class="preview-grid">`;
+    html += kv("First Name", $("firstName").value);
+    html += kv("Middle Name", $("middleName").value);
+    html += kv("Last Name", $("lastName").value);
+    html += kv("Date", $("formDate").value);
+    html += kv("Street", $("street").value);
+    html += kv("Apt/Suite", $("apt").value);
+    html += kv("City", $("city").value);
+    html += kv("State", $("state").value);
+    html += kv("Zip Code", $("zip").value);
+    html += kv("Email", $("email").value);
+    html += kv("Phone", $("phone").value);
+    html += kv("SSN", $("ssn").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Employment Details</h3><div class="preview-grid">`;
+    html += kv("Date Available", $("dateAvailable").value);
+    html += kv("Desired Pay", $("pay").value);
+    html += kv("Pay Type", $("payType").value);
+    html += kv("Position Applied For", $("position").value);
+    html += kv("Employment Desired", $("employmentDesired").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Employment Eligibility</h3><div class="preview-grid">`;
+    html += kv("Eligible To Work In U.S.", $("eligibleUS").value);
+    html += kv("Worked Before", $("workedBefore").value);
+    html += kv("Worked From", $("workedFrom").value);
+    html += kv("Worked To", $("workedTo").value);
+    html += kv("Felony", $("felony").value);
+    html += kv("Felony Explanation", $("felonyExplain").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Education</h3><div class="preview-grid">`;
+    html += kv("High School", $("eduHighSchool").value);
+    html += kv("High School City / State", $("eduHighSchoolCityState").value);
+    html += kv("High School From", $("eduHighFrom").value);
+    html += kv("High School To", $("eduHighTo").value);
+    html += kv("High School Graduate", $("eduHighGraduate").value);
+    html += kv("High School Credential", $("eduHighDiploma").value);
+    html += kv("College", $("eduCollege").value);
+    html += kv("College City / State", $("eduCollegeCityState").value);
+    html += kv("College From", $("eduCollegeFrom").value);
+    html += kv("College To", $("eduCollegeTo").value);
+    html += kv("College Graduate", $("eduCollegeGraduate").value);
+    html += kv("Degree", $("eduCollegeDegree").value);
+    html += kv("Other Certifications?", $("hasOtherCerts").value);
+    html += kv("Other Certifications", $("otherCertifications").value);
+    html += `</div></div>`;
+
+    html += buildEmploymentPreview(1);
+    html += buildEmploymentPreview(2);
+    html += buildEmploymentPreview(3);
+
+    html += buildReferencePreview(1);
+    html += buildReferencePreview(2);
+    html += buildReferencePreview(3);
+
+    html += `<div class="preview-section"><h3>Military Service</h3><div class="preview-grid">`;
+    html += kv("Veteran", $("veteran").value);
+    html += kv("Branch", $("branch").value);
+    html += kv("Rank", $("rank").value);
+    html += kv("Service From", $("serviceFrom").value);
+    html += kv("Service To", $("serviceTo").value);
+    html += kv("Type Of Discharge", $("dischargeType").value);
+    html += kv("Discharge Explanation", $("dischargeExplain").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Background Check Consent</h3><div class="preview-grid">`;
+    html += kv("Background Check Consent", $("bgConsent").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Job Application Signature</h3><div class="preview-grid">`;
+    html += kv("Signature", must($("signature").value) ? "Captured" : "Missing");
+    html += kv("Signature Date", $("sigDate").value);
+    html += kv("Print Name", $("printName").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Documents / Uploads</h3><div class="preview-grid">`;
+    getRequiredUploadInputs().forEach(id => {
+      const file = getEl(id)?.files?.[0];
+      html += kv(id, file ? file.name : "Not uploaded");
+    });
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Reference Release Form</h3><div class="preview-grid">`;
+    html += kv("Signature", must($("rrSignatureFull").value) ? "Captured" : "Missing");
+    html += kv("Printed Name", $("rrPrintedName").value);
+    html += kv("Date", $("rrDate").value);
+    html += kv("Reference 1 Name", $("rrRef1Name").value);
+    html += kv("Reference 1 Title", $("rrRef1Title").value);
+    html += kv("Reference 1 Email", $("rrRef1Email").value);
+    html += kv("Reference 1 Phone", $("rrRef1Phone").value);
+    html += kv("Reference 2 Name", $("rrRef2Name").value);
+    html += kv("Reference 2 Title", $("rrRef2Title").value);
+    html += kv("Reference 2 Email", $("rrRef2Email").value);
+    html += kv("Reference 2 Phone", $("rrRef2Phone").value);
+    html += `</div></div>`;
+
+    html += `<div class="preview-section"><h3>Emergency Contact Form</h3><div class="preview-grid">`;
+    html += kv("Name", $("ecName").value);
+    html += kv("Department", $("ecDept").value);
+    html += kv("Home Address", $("ecHomeAddress").value);
+    html += kv("City State Zip", $("ecCityStateZip").value);
+    html += kv("Home Phone", $("ecHomePhone").value);
+    html += kv("Cell Phone", $("ecCellPhone").value);
+
+    html += kv("Emergency Contact 1 Name", $("ec1Name").value);
+    html += kv("Emergency Contact 1 Relationship", $("ec1Rel").value);
+    html += kv("Emergency Contact 1 Address", $("ec1Address").value);
+    html += kv("Emergency Contact 1 City State Zip", $("ec1CityStateZip").value);
+    html += kv("Emergency Contact 1 Home Phone", $("ec1HomePhone").value);
+    html += kv("Emergency Contact 1 Cell Phone", $("ec1CellPhone").value);
+    html += kv("Emergency Contact 1 Work Phone", $("ec1WorkPhone").value);
+    html += kv("Emergency Contact 1 Employer", $("ec1Employer").value);
+
+    html += kv("Emergency Contact 2 Name", $("ec2Name").value);
+    html += kv("Emergency Contact 2 Relationship", $("ec2Rel").value);
+    html += kv("Emergency Contact 2 Address", $("ec2Address").value);
+    html += kv("Emergency Contact 2 City State Zip", $("ec2CityStateZip").value);
+    html += kv("Emergency Contact 2 Home Phone", $("ec2HomePhone").value);
+    html += kv("Emergency Contact 2 Cell Phone", $("ec2CellPhone").value);
+    html += kv("Emergency Contact 2 Work Phone", $("ec2WorkPhone").value);
+    html += kv("Emergency Contact 2 Employer", $("ec2Employer").value);
+
+    html += kv("Doctor Name", $("docName").value);
+    html += kv("Doctor Phone", $("docPhone").value);
+    html += kv("Dentist Name", $("dentistName").value);
+    html += kv("Dentist Phone", $("dentistPhone").value);
+    html += kv("Consent", $("ecConsent").value);
+    html += kv("Signature", must($("ecSignature").value) ? "Captured" : "Missing");
+    html += kv("Signature Date", $("ecSigDate").value);
+    html += `</div></div>`;
+
+    $("previewContent").innerHTML = html;
+  }
+
+  // ================= PDF (TRUE PDF RENDERER - NO IMAGE SLICING) =================
+  function getSignatureDataUrl(id) {
+    const v = getEl(id)?.value || "";
+    return /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(v) ? v : "";
+  }
+
+  function getImageFormatFromDataUrl(dataUrl) {
+    if (/^data:image\/jpe?g/i.test(dataUrl)) return "JPEG";
+    return "PNG";
+  }
+
+  function extractPreviewSectionsFromDom() {
+    buildFullPreview();
+
+    return Array.from(document.querySelectorAll("#previewContent .preview-section")).map(sec => {
+      const title = sec.querySelector("h3")?.innerText?.trim() || "Section";
+      const items = Array.from(sec.querySelectorAll(".kv")).map(card => ({
+        label: pdfText(card.querySelector(".k")?.innerText),
+        value: pdfText(card.querySelector(".v")?.innerText)
+      }));
+      return { title, items };
+    });
+  }
+
+  function createPdfState(pdf) {
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    return {
+      pageW,
+      pageH,
+      margin,
+      usableW: pageW - margin * 2,
+      usableH: pageH - margin * 2,
+      y: margin,
+      pageNo: 1
+    };
+  }
+
+  function drawPdfPageHeader(pdf, state, opts = {}) {
+    const small = !!opts.small;
+    const title = small ? "Applicant Onboarding Summary (cont.)" : "Zeno Wellness Group";
+    const sub = small ? `Application ID: ${appId || "—"}` : "Applicant Onboarding Submission Summary";
+
+    pdf.setFillColor(255, 247, 241);
+    pdf.setDrawColor(238, 124, 43);
+    pdf.roundedRect(state.margin, state.y, state.usableW, small ? 14 : 22, 2, 2, "FD");
+
+    pdf.setTextColor(17, 24, 39);
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(small ? 11 : 16);
+    pdf.text(title, state.margin + 4, state.y + (small ? 5.5 : 7));
+
+    pdf.setTextColor(180, 83, 9);
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(small ? 8 : 10);
+    pdf.text(sub, state.margin + 4, state.y + (small ? 10.5 : 12.5));
+
+    if (!small) {
+      pdf.setTextColor(75, 85, 99);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(8);
+      pdf.text(`Generated: ${new Date().toLocaleString()}`, state.margin + 4, state.y + 17.5);
+      pdf.text(`Applicant: ${pdfText((getEl("firstName")?.value || "") + " " + (getEl("lastName")?.value || ""))}`, state.margin + 72, state.y + 17.5);
+      pdf.text(`Application ID: ${appId || "—"}`, state.margin + 145, state.y + 17.5);
+      state.y += 28;
+    } else {
+      state.y += 18;
+    }
+  }
+
+  function ensurePdfSpace(pdf, state, neededH, nextSectionTitle = "") {
+    const maxY = state.pageH - state.margin;
+    if (state.y + neededH <= maxY) return;
+
+    pdf.addPage();
+    state.pageNo += 1;
+    state.y = state.margin;
+    drawPdfPageHeader(pdf, state, { small: true });
+
+    if (nextSectionTitle) {
+      drawPdfSectionTitle(pdf, state, `${nextSectionTitle} (cont.)`);
+    }
+  }
+
+  function drawPdfSectionTitle(pdf, state, title) {
+    ensurePdfSpace(pdf, state, 10);
+    pdf.setFillColor(255, 250, 245);
+    pdf.setDrawColor(253, 230, 207);
+    pdf.roundedRect(state.margin, state.y, state.usableW, 8, 2, 2, "FD");
+
+    pdf.setTextColor(180, 83, 9);
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10);
+    pdf.text(title, state.margin + 3, state.y + 5.3);
+    state.y += 10;
+  }
+
+  function estimatePdfCardHeight(pdf, value, width) {
+    const textWidth = width - 6;
+    const lines = pdf.splitTextToSize(pdfText(value), textWidth);
+    const lineCount = Math.max(lines.length, 1);
+    return 10 + (lineCount * 4) + 3;
+  }
+
+  function drawPdfFieldCard(pdf, x, y, w, h, label, value) {
+    pdf.setDrawColor(226, 232, 240);
+    pdf.setFillColor(251, 253, 255);
+    pdf.roundedRect(x, y, w, h, 2, 2, "FD");
+
+    pdf.setTextColor(100, 116, 139);
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(7.2);
+    pdf.text(String(label || "").toUpperCase(), x + 3, y + 4.2);
+
+    pdf.setTextColor(15, 23, 42);
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(9);
+    const lines = pdf.splitTextToSize(pdfText(value), w - 6);
+    pdf.text(lines, x + 3, y + 9);
+  }
+
+  function drawPdfSectionItems(pdf, state, title, items) {
+    if (!items || !items.length) return;
+
+    drawPdfSectionTitle(pdf, state, title);
+
+    const colGap = 5;
+    const colW = (state.usableW - colGap) / 2;
+
+    for (let i = 0; i < items.length; i += 2) {
+      const left = items[i];
+      const right = items[i + 1];
+
+      const leftH = estimatePdfCardHeight(pdf, left?.value, colW);
+      const rightH = right ? estimatePdfCardHeight(pdf, right?.value, colW) : leftH;
+      const rowH = Math.max(leftH, rightH);
+
+      ensurePdfSpace(pdf, state, rowH + 3, title);
+
+      drawPdfFieldCard(pdf, state.margin, state.y, colW, rowH, left?.label || "", left?.value || "—");
+
+      if (right) {
+        drawPdfFieldCard(pdf, state.margin + colW + colGap, state.y, colW, rowH, right.label, right.value);
+      }
+
+      state.y += rowH + 3;
+    }
+
+    state.y += 2;
+  }
+
+  function drawPdfSignatureSection(pdf, state) {
+    const sigs = [
+      {
+        title: "Job Signature",
+        dataUrl: getSignatureDataUrl("signature"),
+        date: getEl("sigDate")?.value || "—"
+      },
+      {
+        title: "Reference Release",
+        dataUrl: getSignatureDataUrl("rrSignatureFull"),
+        date: getEl("rrDate")?.value || "—"
+      },
+      {
+        title: "Emergency Contact",
+        dataUrl: getSignatureDataUrl("ecSignature"),
+        date: getEl("ecSigDate")?.value || "—"
+      }
+    ];
+
+    drawPdfSectionTitle(pdf, state, "Signatures");
+
+    const gap = 4;
+    const cardW = (state.usableW - gap * 2) / 3;
+    const cardH = 36;
+
+    ensurePdfSpace(pdf, state, cardH + 4, "Signatures");
+
+    sigs.forEach((sig, idx) => {
+      const x = state.margin + idx * (cardW + gap);
+      const y = state.y;
+
+      pdf.setDrawColor(229, 231, 235);
+      pdf.setFillColor(255, 255, 255);
+      pdf.roundedRect(x, y, cardW, cardH, 2, 2, "FD");
+
+      pdf.setTextColor(55, 65, 81);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(7.5);
+      pdf.text(sig.title.toUpperCase(), x + 2.5, y + 4.5);
+
+      pdf.setDrawColor(203, 213, 225);
+      pdf.roundedRect(x + 2.5, y + 7, cardW - 5, 20, 1.5, 1.5, "S");
+
+      if (sig.dataUrl) {
+        try {
+          pdf.addImage(
+            sig.dataUrl,
+            getImageFormatFromDataUrl(sig.dataUrl),
+            x + 3.2,
+            y + 7.7,
+            cardW - 6.4,
+            18.6
+          );
+        } catch (e) {
+          pdf.setTextColor(185, 28, 28);
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(8);
+          pdf.text("Signature error", x + 4, y + 18);
+        }
+      } else {
+        pdf.setTextColor(185, 28, 28);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(8);
+        pdf.text("Missing", x + 4, y + 18);
+      }
+
+      pdf.setTextColor(107, 114, 128);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(7.2);
+      pdf.text(`Date: ${pdfText(sig.date)}`, x + 2.5, y + 31.5);
+    });
+
+    state.y += cardH + 4;
+  }
+
+  function drawPdfFooter(pdf) {
+    const pageCount = pdf.getNumberOfPages();
+
+    for (let p = 1; p <= pageCount; p++) {
+      pdf.setPage(p);
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+
+      pdf.setDrawColor(229, 231, 235);
+      pdf.line(10, pageH - 8, pageW - 10, pageH - 8);
+
+      pdf.setTextColor(107, 114, 128);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(7.5);
+      pdf.text("Generated from Zeno Wellness Applicant Onboarding form", 10, pageH - 4.5);
+      pdf.text(`Page ${p} of ${pageCount}`, pageW - 24, pageH - 4.5);
+    }
+  }
+
+  async function generateApplicationPdfBase64() {
+    if (!window.jspdf) {
+      throw new Error("jsPDF library not loaded.");
+    }
+
+    buildFullPreview();
+    const sections = extractPreviewSectionsFromDom();
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const state = createPdfState(pdf);
+
+    drawPdfPageHeader(pdf, state, { small: false });
+    drawPdfSignatureSection(pdf, state);
+
+    sections.forEach(section => {
+      drawPdfSectionItems(pdf, state, section.title, section.items);
+    });
+
+    drawPdfFooter(pdf);
+
+    const dataUri = pdf.output("datauristring");
+    return dataUri.split(",")[1];
+  }
+
+  async function uploadApplicationPdfToFlow() {
+    const st = $("finalStatus");
+    st.className = "pill";
+    st.textContent = "Generating PDF...";
+
+    buildFullPreview();
+
+    const pdfBase64 = await generateApplicationPdfBase64();
+    const fileName = getPdfFileName();
+    const allData = collectAllFormData();
+    const previewHtml = $("previewContent").innerHTML;
+
+    st.className = "pill";
+    st.textContent = "Uploading PDF to SharePoint...";
+
+    const payload = {
+      apiKey: API_KEY,
+      eventType: "saveApplicationPdf",
+      appId: appId || null,
+      applicantName: [getEl("firstName")?.value || "", getEl("lastName")?.value || ""].join(" ").trim(),
+      pdfFileName: fileName,
+      pdfBase64,
+      previewHtml,
+      allData,
+      metadata: {
+        formDate: getEl("formDate")?.value || null,
+        email: getEl("email")?.value || null,
+        phone: getEl("phone")?.value || null,
+        position: getEl("position")?.value || null
+      }
+    };
+
+    const result = await callFlowOrThrow(FLOW_URL_PDF, payload, 120000);
+    const js = result?.json || null;
+
+    if (js?.webUrl) {
+      st.className = "pill ok";
+      st.innerHTML = `PDF saved. <a href="${js.webUrl}" target="_blank" rel="noopener">Open PDF</a>`;
+    } else {
+      st.className = "pill ok";
+      st.textContent = "PDF saved to SharePoint successfully.";
+    }
+
+    return js || result?.text || null;
+  }
+
+  // ================= PENDING / PROGRESS =================
+  function updatePendingFields() {
+    for (let i = 1; i <= 5; i++) {
+      const step = getEl("step" + i);
+      if (!step) continue;
+
+      const requiredEls = Array.from(step.querySelectorAll("input[required], select[required], textarea[required]"))
+        .filter(el => !el.disabled && (el.type === "hidden" || el.offsetParent !== null));
+
+      const empties = [];
+
+      requiredEls.forEach(el => {
+        if (el.type === "file") {
+          if (!el.files || !el.files.length) empties.push(getFieldLabel(el));
+        } else if (el.type === "hidden") {
+          if (!must(el.value)) {
+            const map = {
+              signature: "Job Signature",
+              rrSignatureFull: "Reference Release Signature",
+              ecSignature: "Emergency Signature"
+            };
+            empties.push(map[el.id] || getFieldLabel(el));
+          }
+        } else if (!must(el.value)) {
+          empties.push(getFieldLabel(el));
+        }
+      });
+
+      validatePhoneFieldsInStep(step).forEach(el => {
+        const msg = `${getFieldLabel(el)} (10 digits)`;
+        if (!empties.includes(msg)) empties.push(msg);
+      });
+
+      validateDatePairsInStep(step).forEach(item => {
+        if (!empties.includes(item.msg)) empties.push(item.msg);
+      });
+
+      validateSSNAndZip(step).forEach(item => {
+        if (!empties.includes(item.msg)) empties.push(item.msg);
+      });
+
+      const container = getEl(`step${i}PendingItems`);
+      if (container) {
+        if (!empties.length) {
+          container.innerHTML = `<span style="color:#059669;font-weight:700;">✓ all complete</span>`;
+        } else {
+          container.innerHTML = [...new Set(empties)].slice(0, 14).map(v => `<span class="pending-item">${esc(v)}</span>`).join(" ");
+        }
+      }
+    }
+  }
+
+  function updateProgressBar() {
+    const allRequired = Array.from(document.querySelectorAll("input[required], select[required], textarea[required]"))
+      .filter(el => !el.disabled);
+
+    const total = allRequired.length;
+    let filled = 0;
+
+    allRequired.forEach(el => {
+      let ok = false;
+      if (el.type === "file") ok = !!(el.files && el.files.length);
+      else if (el.type === "hidden") ok = must(el.value);
+      else ok = must(el.value);
+      if (ok) filled++;
+    });
+
+    const pct = total ? Math.round((filled / total) * 100) : 0;
+    $("progressFill").style.width = pct + "%";
+    $("progressPercent").textContent = pct + "%";
+  }
+
+  // ================= LOCK AFTER SUBMIT =================
+  function lockFormAfterSubmit() {
+    submitted = true;
+
+    document.querySelectorAll("input, select, textarea").forEach(el => {
+      el.disabled = true;
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") el.readOnly = true;
+    });
+
+    document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
+    const lockNotice = getEl("lockNotice");
+    if (lockNotice) lockNotice.style.display = "block";
+
+    $("mainNav").style.display = "none";
+    $("previewNav").style.display = "flex";
+    $("btnBackPreview").disabled = true;
+    $("btnSubmitFinal").disabled = true;
+  }
+
+  // ================= NAVIGATION =================
+  async function goNext() {
+    clearErrors(document);
+    if (submitted) return;
+
+    if (!validateStep(stepIndex)) return;
+
+    if (stepIndex === 0) {
+      const ok = await saveJobApplication();
+      if (!ok) return;
+    }
+
+    if (stepIndex === 2) {
+      const ok = await saveReferenceRelease();
+      if (!ok) return;
+    }
+
+    if (stepIndex === 3) {
+      const ok = await saveEmergencyContact();
+      if (!ok) return;
+    }
+
+    if (stepIndex < steps.length - 1) {
+      stepIndex++;
+      showStep();
+    }
+  }
+
+  async function submitFinal() {
+    clearErrors(document);
+    const st = $("finalStatus");
+    st.className = "pill";
+    st.textContent = "Submitting...";
+
+    if (submitted) {
+      st.className = "pill warn";
+      st.textContent = "Already submitted.";
+      return;
+    }
+
+    const hc = humanCheckOrExplain();
+    if (!hc.ok) {
+      st.className = "pill err";
+      st.textContent = hc.msg;
+      showError(hc.msg);
+      return;
+    }
+
+    try {
+      $("btnSubmitFinal").disabled = true;
+      $("btnBackPreview").disabled = true;
+
+      stepIndex = 0; showStep();
+      if (!(await saveJobApplication())) throw new Error("Job Application not saved.");
+
+      stepIndex = 1; showStep();
+      if (!(await uploadAllDocs())) throw new Error("Documents incomplete or upload failed.");
+
+      stepIndex = 2; showStep();
+      if (!(await saveReferenceRelease())) throw new Error("Reference Release not saved.");
+
+      stepIndex = 3; showStep();
+      if (!(await saveEmergencyContact())) throw new Error("Emergency Contact not saved.");
+
+      stepIndex = 4; showStep();
+
+      await uploadApplicationPdfToFlow();
+
+      st.className = "pill ok";
+      st.textContent = "Submitted successfully! Application ID: " + (appId || "");
+
+      lockFormAfterSubmit();
+    } catch (e) {
+      console.error(e);
+      st.className = "pill err";
+      st.textContent = e.message || "Submit failed. Check console.";
+      $("btnSubmitFinal").disabled = false;
+      $("btnBackPreview").disabled = false;
+    }
+  }
+
+  // ================= INIT =================
+  window.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("pointerdown", registerInteraction, { capture: true });
+    window.addEventListener("keydown", registerInteraction, { capture: true });
+    window.addEventListener("scroll", registerInteraction, { capture: true, passive: true });
+
+    try {
+      $("formDate").value = todayStr();
+      $("sigDate").value = todayStr();
+      $("rrDate").value = todayStr();
+      $("ecSigDate").value = todayStr();
+    } catch {}
+
+    applyNumericFieldRules();
+
+    datePairs.forEach(([fromId, toId]) => wireDatePairConstraint(fromId, toId));
+
+    setupSignaturePad({
+      canvasId: "signatureCanvas",
+      hiddenInputId: "signature",
+      clearBtnId: "signatureClear",
+      statusId: "signatureStatus"
+    });
+
+    setupSignaturePad({
+      canvasId: "rrSignatureCanvas",
+      hiddenInputId: "rrSignatureFull",
+      clearBtnId: "rrSignatureClear",
+      statusId: "rrSignatureStatus"
+    });
+
+    setupSignaturePad({
+      canvasId: "ecSignatureCanvas",
+      hiddenInputId: "ecSignature",
+      clearBtnId: "ecSignatureClear",
+      statusId: "ecSignatureStatus"
+    });
+
+    $("workedBefore").addEventListener("change", () => {
+      registerInteraction();
+      toggleWorkedBeforeFields();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("felony").addEventListener("change", () => {
+      registerInteraction();
+      toggleFelonyExplain();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("veteran").addEventListener("change", () => {
+      registerInteraction();
+      toggleMilitaryFields();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("branch").addEventListener("change", () => {
+      registerInteraction();
+      toggleMilitaryFields();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("hasOtherCerts").addEventListener("change", () => {
+      registerInteraction();
+      toggleOtherCertifications();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("eduHighGraduate").addEventListener("change", () => {
+      registerInteraction();
+      toggleCollegeFieldsByHighGraduate();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("eduCollegeGraduate").addEventListener("change", () => {
+      registerInteraction();
+      toggleCollegeDegreeRequirement();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    toggleWorkedBeforeFields();
+    toggleFelonyExplain();
+    toggleMilitaryFields();
+    toggleOtherCertifications();
+    toggleCollegeFieldsByHighGraduate();
+    toggleCollegeDegreeRequirement();
+
+    setEmployerSectionEnabled(2, false);
+    setEmployerSectionEnabled(3, false);
+    watchEmployerInputs(1);
+    watchEmployerInputs(2);
+    watchEmployerInputs(3);
+    wireEmployerPayTypeAlignment("emp1");
+    wireEmployerPayTypeAlignment("emp2");
+    wireEmployerPayTypeAlignment("emp3");
+    refreshEmployerButtons();
+
+    $("btnAddEmp2").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      setEmployerSectionEnabled(2, true);
+      $("emp2Section").scrollIntoView({ behavior: "smooth", block: "start" });
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("btnAddEmp3").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      setEmployerSectionEnabled(3, true);
+      $("emp3Section").scrollIntoView({ behavior: "smooth", block: "start" });
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("btnRemoveEmp2").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      setEmployerSectionEnabled(2, false);
+      setEmployerSectionEnabled(3, false);
+      refreshEmployerButtons();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("btnRemoveEmp3").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      setEmployerSectionEnabled(3, false);
+      refreshEmployerButtons();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("btnAddRef").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+
+      if ($("ref2Container").classList.contains("hidden")) $("ref2Container").classList.remove("hidden");
+      else if ($("ref3Container").classList.contains("hidden")) $("ref3Container").classList.remove("hidden");
+
+      updateRefButtons();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("btnRemoveRef2").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      $("ref2Container").classList.add("hidden");
+      clearReference(2);
+      updateRefButtons();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    $("btnRemoveRef3").addEventListener("click", () => {
+      if (submitted) return;
+      registerInteraction();
+      $("ref3Container").classList.add("hidden");
+      clearReference(3);
+      updateRefButtons();
+      updatePendingFields();
+      updateProgressBar();
+    });
+
+    updateRefButtons();
+
+    wireDownloadSelectionUI();
+    updateDlCountAndButton();
+
+    setupFileUpload("idFront","idFrontPreview","idFrontName","idFrontSize","idFrontRemove");
+    setupFileUpload("idBack","idBackPreview","idBackName","idBackSize","idBackRemove");
+    setupFileUpload("i9","i9Preview","i9Name","i9Size","i9Remove");
+    setupFileUpload("w9","w9Preview","w9Name","w9Size","w9Remove");
+    setupFileUpload("disclosure","disclosurePreview","disclosureName","disclosureSize","disclosureRemove");
+    setupFileUpload("att4","att4Preview","att4Name","att4Size","att4Remove");
+    setupFileUpload("att5","att5Preview","att5Name","att5Size","att5Remove");
+    setupFileUpload("att6","att6Preview","att6Name","att6Size","att6Remove");
+
+    document.querySelectorAll("input, select, textarea").forEach(el => {
+      el.addEventListener("input", () => {
+        registerInteraction();
+        clearFieldError(el);
+        updatePendingFields();
+        updateProgressBar();
+      });
+
+      el.addEventListener("change", () => {
+        registerInteraction();
+        clearFieldError(el);
+        updatePendingFields();
+        updateProgressBar();
+      });
+    });
+
+    $("btnBack").addEventListener("click", () => {
+      if (submitted) return;
+      clearErrors(document);
+      if (stepIndex > 0) {
+        stepIndex--;
+        showStep();
+      }
+    });
+
+    $("btnNext").addEventListener("click", async () => {
+      if (submitted) return;
+      $("btnNext").disabled = true;
+      try {
+        await goNext();
+      } finally {
+        if (!submitted) $("btnNext").disabled = false;
+      }
+    });
+
+    $("btnBackPreview").addEventListener("click", () => {
+      if (submitted) return;
+      clearErrors(document);
+      if (stepIndex > 0) {
+        stepIndex--;
+        showStep();
+      }
+    });
+
+    $("btnSubmitFinal").addEventListener("click", submitFinal);
+
+    let resizeTimer = null;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        Object.values(signaturePads).forEach(p => p.resizeCanvas());
+      }, 120);
+    });
+
+    showStep();
+    updatePendingFields();
+    updateProgressBar();
+  });
+})();
+</script>
+
+</body>
+</html>
