@@ -480,7 +480,6 @@
       display: none;
     }
 
-    .hp { position: absolute; left: -9999px; top: -9999px; }
 
     @media (max-width: 860px) {
       .card { padding: 1rem; border-radius: 1rem; }
@@ -521,13 +520,7 @@
   <div id="errorBanner" class="error-banner"></div>
   <div id="lockNotice" class="lock-note">Application submitted. Form is now locked (read-only).</div>
 
-  <!-- honeypot -->
-  <div class="hp">
-    <label>Leave empty</label>
-    <input id="companyWebsite" autocomplete="off" />
-  </div>
-
-  <!-- STEP 1 -->
+<!-- STEP 1 -->
   <div class="step active" id="step1">
     <div class="form-section">
       <div class="section-pill">Personal Information</div>
@@ -1317,8 +1310,6 @@
   let appId = null;
   let submitted = false;
 
-  const pageLoadedAt = Date.now();
-  let firstInteractionAt = null;
 
   const signaturePads = {};
   const datePairs = [
@@ -1433,30 +1424,6 @@
     if (wrap) wrap.classList.remove("signature-error");
   }
 
-  function registerInteraction() {
-    if (!firstInteractionAt) firstInteractionAt = Date.now();
-  }
-
-  function honeypotLooksReal(v) {
-    const s = (v ?? "").toString().trim();
-    if (!s) return false;
-    if (s.length <= 1) return false;
-    if (/(https?:\/\/|www\.|@)/i.test(s)) return true;
-    const alnumCount = (s.match(/[a-z0-9]/gi) || []).length;
-    return alnumCount >= 3;
-  }
-
-  function timingLooksBot() {
-    const now = Date.now();
-    if (now - pageLoadedAt < 2000) return true;
-    if (!firstInteractionAt) return true;
-    if (now - firstInteractionAt < 800) return true;
-    return false;
-  }
-
-  function humanCheckOrExplain() {
-    return { ok: true };
-  }
 
   function sanitizeFileName(name) {
     return (name || "Application")
@@ -1889,7 +1856,6 @@
 
     function start(evt) {
       if (submitted) return;
-      registerInteraction();
       drawing = true;
       const p = getPoint(evt);
       lastX = p.x;
@@ -1900,7 +1866,6 @@
 
     function move(evt) {
       if (!drawing || submitted) return;
-      registerInteraction();
       const p = getPoint(evt);
 
       ctx.beginPath();
@@ -1924,7 +1889,6 @@
 
     function clearPad() {
       if (submitted) return;
-      registerInteraction();
 
       const r = canvas.getBoundingClientRect();
       ctx.fillStyle = "#ffffff";
@@ -2066,7 +2030,6 @@
 
     input.addEventListener("change", e => {
       if (submitted) return;
-      registerInteraction();
 
       const file = e.target.files[0];
       if (!file) {
@@ -2104,7 +2067,6 @@
 
     removeBtn.addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       input.value = "";
       reset();
       updatePendingFields();
@@ -2290,7 +2252,6 @@
 
     root.querySelectorAll("input, select, textarea").forEach(el => {
       if (!el.id) return;
-      if (el.id === "companyWebsite") return;
       if (el.disabled) return;
       if (el.type === "file") return;
 
@@ -2352,14 +2313,6 @@
     st.className = "pill";
     st.textContent = "Saving job application...";
 
-    const hc = humanCheckOrExplain();
-    if (!hc.ok) {
-      st.className = "pill err";
-      st.textContent = hc.msg;
-      showError(hc.msg);
-      return false;
-    }
-
     if (!validateStep(0)) {
       st.className = "pill err";
       st.textContent = "Please fix required fields.";
@@ -2395,14 +2348,6 @@
     const up = $("uploadStatus");
     up.className = "pill";
     up.textContent = "Uploading documents...";
-
-    const hc = humanCheckOrExplain();
-    if (!hc.ok) {
-      up.className = "pill err";
-      up.textContent = hc.msg;
-      showError(hc.msg);
-      return false;
-    }
 
     if (!appId) {
       up.className = "pill err";
@@ -2464,14 +2409,6 @@
     st.className = "pill";
     st.textContent = "Saving reference release...";
 
-    const hc = humanCheckOrExplain();
-    if (!hc.ok) {
-      st.className = "pill err";
-      st.textContent = hc.msg;
-      showError(hc.msg);
-      return false;
-    }
-
     if (!validateStep(2)) {
       st.className = "pill err";
       st.textContent = "Please fix required fields.";
@@ -2506,14 +2443,6 @@
     const st = $("ecStatus");
     st.className = "pill";
     st.textContent = "Saving emergency contact...";
-
-    const hc = humanCheckOrExplain();
-    if (!hc.ok) {
-      st.className = "pill err";
-      st.textContent = hc.msg;
-      showError(hc.msg);
-      return false;
-    }
 
     if (!validateStep(3)) {
       st.className = "pill err";
@@ -3198,14 +3127,6 @@
       return;
     }
 
-    const hc = humanCheckOrExplain();
-    if (!hc.ok) {
-      st.className = "pill err";
-      st.textContent = hc.msg;
-      showError(hc.msg);
-      return;
-    }
-
     try {
       $("btnSubmitFinal").disabled = true;
       $("btnBackPreview").disabled = true;
@@ -3241,9 +3162,6 @@
 
   // ================= INIT =================
   window.addEventListener("DOMContentLoaded", () => {
-    window.addEventListener("pointerdown", registerInteraction, { capture: true });
-    window.addEventListener("keydown", registerInteraction, { capture: true });
-    window.addEventListener("scroll", registerInteraction, { capture: true, passive: true });
 
     try {
       $("formDate").value = todayStr();
@@ -3278,49 +3196,42 @@
     });
 
     $("workedBefore").addEventListener("change", () => {
-      registerInteraction();
       toggleWorkedBeforeFields();
       updatePendingFields();
       updateProgressBar();
     });
 
     $("felony").addEventListener("change", () => {
-      registerInteraction();
       toggleFelonyExplain();
       updatePendingFields();
       updateProgressBar();
     });
 
     $("veteran").addEventListener("change", () => {
-      registerInteraction();
       toggleMilitaryFields();
       updatePendingFields();
       updateProgressBar();
     });
 
     $("branch").addEventListener("change", () => {
-      registerInteraction();
       toggleMilitaryFields();
       updatePendingFields();
       updateProgressBar();
     });
 
     $("hasOtherCerts").addEventListener("change", () => {
-      registerInteraction();
       toggleOtherCertifications();
       updatePendingFields();
       updateProgressBar();
     });
 
     $("eduHighGraduate").addEventListener("change", () => {
-      registerInteraction();
       toggleCollegeFieldsByHighGraduate();
       updatePendingFields();
       updateProgressBar();
     });
 
     $("eduCollegeGraduate").addEventListener("change", () => {
-      registerInteraction();
       toggleCollegeDegreeRequirement();
       updatePendingFields();
       updateProgressBar();
@@ -3345,7 +3256,6 @@
 
     $("btnAddEmp2").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       setEmployerSectionEnabled(2, true);
       $("emp2Section").scrollIntoView({ behavior: "smooth", block: "start" });
       updatePendingFields();
@@ -3354,7 +3264,6 @@
 
     $("btnAddEmp3").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       setEmployerSectionEnabled(3, true);
       $("emp3Section").scrollIntoView({ behavior: "smooth", block: "start" });
       updatePendingFields();
@@ -3363,7 +3272,6 @@
 
     $("btnRemoveEmp2").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       setEmployerSectionEnabled(2, false);
       setEmployerSectionEnabled(3, false);
       refreshEmployerButtons();
@@ -3373,7 +3281,6 @@
 
     $("btnRemoveEmp3").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       setEmployerSectionEnabled(3, false);
       refreshEmployerButtons();
       updatePendingFields();
@@ -3382,7 +3289,6 @@
 
     $("btnAddRef").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
 
       if ($("ref2Container").classList.contains("hidden")) $("ref2Container").classList.remove("hidden");
       else if ($("ref3Container").classList.contains("hidden")) $("ref3Container").classList.remove("hidden");
@@ -3394,7 +3300,6 @@
 
     $("btnRemoveRef2").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       $("ref2Container").classList.add("hidden");
       clearReference(2);
       updateRefButtons();
@@ -3404,7 +3309,6 @@
 
     $("btnRemoveRef3").addEventListener("click", () => {
       if (submitted) return;
-      registerInteraction();
       $("ref3Container").classList.add("hidden");
       clearReference(3);
       updateRefButtons();
@@ -3428,14 +3332,12 @@
 
     document.querySelectorAll("input, select, textarea").forEach(el => {
       el.addEventListener("input", () => {
-        registerInteraction();
         clearFieldError(el);
         updatePendingFields();
         updateProgressBar();
       });
 
       el.addEventListener("change", () => {
-        registerInteraction();
         clearFieldError(el);
         updatePendingFields();
         updateProgressBar();
