@@ -1455,13 +1455,6 @@
   }
 
   function humanCheckOrExplain() {
-    const hp = getEl("companyWebsite");
-    if (hp && honeypotLooksReal(hp.value)) {
-      return { ok: false, msg: "Submission blocked (anti-bot). Please refresh and try again." };
-    }
-    if (timingLooksBot()) {
-      return { ok: false, msg: "Please wait a moment before submitting (anti-bot protection)." };
-    }
     return { ok: true };
   }
 
